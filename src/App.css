@@ -78,3 +78,8 @@
     margin: 10px 0 45px;
     width: 100%;
 }
+.button-google:hover {
+    font-size: 14px;
+    color: black !important;
+    background-color: #ea4335;
+  }

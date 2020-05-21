@@ -1,18 +1,57 @@
-import React from 'react';
-import HomePage from './pages/HomePage'
+import React, { useState, useEffect } from 'react';
 import {Switch, Route} from 'react-router-dom'
+import NavBar from './components/NavBar'
+import LandingPage from './pages/LandingPage'
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
+// import AuthRouter from "./components/AuthRouter"
+import NoMoreLogin from "./components/NoMoreLogin"
 import './css/login.css'
 import './App.css';
 
+const NavRoute = ({exact, path, component:Component, ...props}) => (
+  <Route {...props} exact={exact} path={path} render={() =>(
+    <div>
+      <NavBar setUser={props.setUser} user={props.user}/>
+      <Component {...props} />
+    </div>
+  )} />
+)
+
 function App() {
+  const [user, setUser] = useState(null)
+  useEffect(() => {
+    checkUser()
+  },[])
+  async function checkUser(){
+    const urlToken = window.location.href.split("?token=")[1]
+    ? window.location.href.split("?token=")[1]
+    :null
+    const localToken = localStorage.getItem("token")
+    const token = urlToken || localToken
+    console.log(token)
+    if(!token) return
+    const res = await fetch(process.env.REACT_APP_SERVER + "/users/me", {
+      headers: {authorization: `Bearer ${token}`}
+    })
+    const body = await res.json()
+    console.log(body)
+    if(body.status === "success"){
+      setUser(body.data)
+      localStorage.setItem("token", token)
+    } else {
+      setUser(null)
+      localStorage.removeItem("token")
+    }
+  }
+  
+  
   return (
     <div>
       <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/login" exact component={LoginPage}/>
-        <Route path="/register" exact component={RegisterPage}/>
+        <NavRoute path="/" setUser={setUser} user={user} exact component={LandingPage}/>
+        <NoMoreLogin path="/login" user={user} setUser={setUser} exact component={LoginPage} />
+        <NoMoreLogin path="/register" user={user} exact component={RegisterPage}/>
       </Switch>
     </div>
    
