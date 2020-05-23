@@ -17,7 +17,7 @@ export default function SavoryBread() {
         },
       }
     return (
-        <div className="mt-5 bg-white rounded">
+        <div className="mt-5 rounded">
         <h1 className="text-center font-weight-bold my-3" style={{ color: "#B91319" }}>Savory Bread</h1>
         <Swiper {...params}>
           <div><img className="w-100 h-100 rounded" src={savory_bread} alt="" /></div>

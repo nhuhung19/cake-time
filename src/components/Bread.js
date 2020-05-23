@@ -17,7 +17,7 @@ export default function Bread() {
     },
   }
   return (
-    <div className="w-100 h-100 bg-white ">
+    <div className="w-100 h-100">
       <h1 className="text-center font-weight-bold my-3" style={{ color: "#B91319" }}>Bread</h1>
       <Swiper {...params}>
           <div><img className="w-100 h-100 rounded" src={bread} alt="" /></div>

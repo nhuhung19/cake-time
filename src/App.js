@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {Switch, Route} from 'react-router-dom'
 import NavBar from './components/NavBar'
+import Banner from './components/Banner'
+import Footer from './components/Footer'
 import LandingPage from './pages/LandingPage'
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
+import ProductsPage from "./pages/ProductsPage"
+import SingleProduct from "./pages/SingleProduct"
 // import AuthRouter from "./components/AuthRouter"
 import NoMoreLogin from "./components/NoMoreLogin"
 import './css/login.css'
@@ -13,7 +17,9 @@ const NavRoute = ({exact, path, component:Component, ...props}) => (
   <Route {...props} exact={exact} path={path} render={() =>(
     <div>
       <NavBar setUser={props.setUser} user={props.user}/>
+      <Banner />
       <Component {...props} />
+      <Footer />
     </div>
   )} />
 )
@@ -50,6 +56,8 @@ function App() {
     <div>
       <Switch>
         <NavRoute path="/" setUser={setUser} user={user} exact component={LandingPage}/>
+        <NavRoute path="/products" setUser={setUser} user={user} exact component={ProductsPage}/>
+        <NavRoute path="/productId" setUser={setUser} user={user} exact component={SingleProduct}/>
         <NoMoreLogin path="/login" user={user} setUser={setUser} exact component={LoginPage} />
         <NoMoreLogin path="/register" user={user} exact component={RegisterPage}/>
       </Switch>

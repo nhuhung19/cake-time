@@ -5,7 +5,7 @@ export default function NavBar(props) {
   let [background, setBackground] = useState('nav-bar')
 
   const onScroll = () => {
-    const backgroundcolor = window.scrollY < 100 ? "nav-bar" : " ";
+    const backgroundcolor = window.scrollY < 100 ? "nav-bar" : "nav-bar-scroll";
     setBackground(backgroundcolor);
   }
   useEffect(() => {
