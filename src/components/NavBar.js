@@ -37,7 +37,7 @@ export default function NavBar(props) {
               <i style={{ fontSize: "22px", cursor: "pointer" }} class="fas fa-user-circle"></i>
             </span>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a className="dropdown-item" >Profile</a>
+              <Link to="/user/profile" className="dropdown-item" >Profile</Link>
               <a className="dropdown-item" >Purchase History</a>
               <a className="dropdown-item" >Selling History</a>
             </div>

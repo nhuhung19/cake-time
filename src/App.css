@@ -19,6 +19,12 @@ body{
     color: #B91319 !important;
 }
 
+.dropdown-item:focus, .dropdown-item:hover{
+    background-color: #B91319;
+    color: white !important;
+    cursor: pointer;
+}
+
 
 .nav-bar-scroll {
     transition: all;
@@ -91,6 +97,7 @@ body{
     margin: 10px 0 45px;
     width: 100%;
 }
+/* "#B91319" */
 .button-google:hover {
     font-size: 14px;
     color: black !important;

@@ -4,11 +4,11 @@ import savory_bread from "../../src/images/savory-bread/savory-cake-3.jpg"
 
 export default function ProductsPage() {
   return (
-    <div className="container">
+    <div className="container my-5">
       <div className="row">
         <div className="col-lg-2">
-          <h3>Filter</h3>
-          <h4>Rating</h4>
+          <div style={{ backgroundColor: "#B91319" }} className="w-100 text-white p-1"><h3>Filter</h3></div>
+          <h5>Rating</h5>
           <p>
             <span style={{ cursor: "pointer" }}>
               <i style={{ color: "#B91319" }} class="fas fa-star"></i>
@@ -60,9 +60,12 @@ export default function ProductsPage() {
           <p>High to low</p>
         </div>
         <div className="col-lg-10 ">
+          <div style={{backgroundColor: "#B91319"}} className="w-100 pl-2 py-1 text-white">
           <h3>Products </h3>
+          </div>
+          <div style={{border: "1px solid #ddd"}} className="bg-white p-3 rounded-lg mt-4">
           <div className="row">
-            <div className="col-lg-3 col-md-6 mt-4 ">
+            <div className="col-lg-3 col-md-6">
               <img className="w-100 rounded" src={sweet_cake} alt="" />
               <div className="d-flex mt-2">
               <h5 className="w-25">Cupcakes </h5>
@@ -70,27 +73,28 @@ export default function ProductsPage() {
               <h6 style={{fontStyle: "italic", color: "#B91319" }} className="w-25 ">$3.95</h6>
               </div>
             </div>
-            <div className="col-lg-3 col-md-6 mt-4">
+            <div className="col-lg-3 col-md-6">
               <img className="w-100 rounded" src={savory_bread} alt="" />
             </div>
-            <div className="col-lg-3  col-md-6 mt-4">
+            <div className="col-lg-3  col-md-6">
               <img className="w-100" src={sweet_cake} alt="" />
             </div>
-            <div className="col-lg-3 col-md-6 mt-4">
+            <div className="col-lg-3 col-md-6">
               <img className="w-100" src={sweet_cake} alt="" />
             </div>
-            <div className="col-lg-3 col-md-6 mt-4">
+            <div className="col-lg-3 col-md-6">
               <img className="w-100" src={sweet_cake} alt="" />
             </div>
-            <div className="col-lg-3 col-md-6 mt-4">
+            <div className="col-lg-3 col-md-6">
               <img className="w-100" src={sweet_cake} alt="" />
             </div>
-            <div className="col-lg-3 col-md-6 mt-4">
+            <div className="col-lg-3 col-md-6">
               <img className="w-100" src={sweet_cake} alt="" />
             </div>
-            <div className="col-lg-3 col-md-6 mt-4">
+            <div className="col-lg-3 col-md-6">
               <img className="w-100" src={sweet_cake} alt="" />
             </div>
+          </div>
           </div>
         </div>
       </div>

@@ -8,6 +8,11 @@ import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import ProductsPage from "./pages/ProductsPage"
 import SingleProduct from "./pages/SingleProduct"
+import UserProfileRoute from "./components/UserProfileRoute"
+import UserProfilePage from "./pages/UserProfilePage"
+import UserProductsPage from "./pages/UserProductsPage"
+import UserPasswordPage from "./pages/UserPasswordPage"
+import PostProductPage from "./pages/PostProductPage"
 // import AuthRouter from "./components/AuthRouter"
 import NoMoreLogin from "./components/NoMoreLogin"
 import './css/login.css'
@@ -58,6 +63,10 @@ function App() {
         <NavRoute path="/" setUser={setUser} user={user} exact component={LandingPage}/>
         <NavRoute path="/products" setUser={setUser} user={user} exact component={ProductsPage}/>
         <NavRoute path="/productId" setUser={setUser} user={user} exact component={SingleProduct}/>
+        <UserProfileRoute path="/user/profile" setUser={setUser} user={user} exact component={UserProfilePage}/>
+        <UserProfileRoute path="/user/products" setUser={setUser} user={user} exact component={UserProductsPage}/>
+        <UserProfileRoute path="/user/password" setUser={setUser} user={user} exact component={UserPasswordPage}/>
+        <UserProfileRoute path="/user/createproduct" setUser={setUser} user={user} exact component={PostProductPage}/>
         <NoMoreLogin path="/login" user={user} setUser={setUser} exact component={LoginPage} />
         <NoMoreLogin path="/register" user={user} exact component={RegisterPage}/>
       </Switch>

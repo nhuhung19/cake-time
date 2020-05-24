@@ -18,7 +18,8 @@ export default function SingleProduct() {
             <hr/>
             <p></p>
             <p>Price: <span>$40.00</span> 
-            <span className="ml-5">Rating: 5</span>
+            <span className="ml-5">Avaibility: </span>
+            <span className="ml-5">Rating Star: 5</span>
             <span ><i style={{ color: "#B91319" }} class="fas fa-star"></i></span>
             </p>
             <p>Provider: </p>
