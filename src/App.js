@@ -36,17 +36,17 @@ function App() {
   },[])
   async function checkUser(){
     const urlToken = window.location.href.split("?token=")[1]
-    ? window.location.href.split("?token=")[1]
+    ? window.location.href.split("?token=")[1].split("#_=_").join("")
     :null
     const localToken = localStorage.getItem("token")
     const token = urlToken || localToken
     console.log(token)
     if(!token) return
-    const res = await fetch(process.env.REACT_APP_SERVER + "/users/me", {
+    const res = await fetch(process.env.REACT_APP_SERVER + "/users/profile", {
       headers: {authorization: `Bearer ${token}`}
     })
     const body = await res.json()
-    console.log(body)
+    // console.log(body)
     if(body.status === "success"){
       setUser(body.data)
       localStorage.setItem("token", token)
@@ -61,7 +61,7 @@ function App() {
     <div>
       <Switch>
         <NavRoute path="/" setUser={setUser} user={user} exact component={LandingPage}/>
-        <NavRoute path="/products" setUser={setUser} user={user} exact component={ProductsPage}/>
+        <NavRoute path="/category/:cId/products" setUser={setUser} user={user} exact component={ProductsPage}/>
         <NavRoute path="/productId" setUser={setUser} user={user} exact component={SingleProduct}/>
         <UserProfileRoute path="/user/profile" setUser={setUser} user={user} exact component={UserProfilePage}/>
         <UserProfileRoute path="/user/products" setUser={setUser} user={user} exact component={UserProductsPage}/>
@@ -71,7 +71,7 @@ function App() {
         <NoMoreLogin path="/register" user={user} exact component={RegisterPage}/>
       </Switch>
     </div>
-   
+    
   );
 }
 

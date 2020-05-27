@@ -22,7 +22,7 @@ export default function SingleProduct() {
             <span className="ml-5">Rating Star: 5</span>
             <span ><i style={{ color: "#B91319" }} class="fas fa-star"></i></span>
             </p>
-            <p>Provider: </p>
+            <p>Owner: </p>
             <p>Average Vote: </p>
             <p><span>Quantity: </span><input type="number" value="1" min="0" max="1000" step="1"/></p>
             <p>Total:</p>
@@ -36,8 +36,8 @@ export default function SingleProduct() {
     <div className="rounded-lg bg-white my-5">
       <nav className="p-3">
         <div className="nav nav-tabs" id="nav-tab" role="tablist">
-          <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Description</a>
-          <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-comment" role="tab" aria-controls="nav-profile" aria-selected="false">Comment</a>
+          <a className="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="#nav-comment" role="tab" aria-controls="nav-profile" aria-selected="false">Comment</a>
+          <a className="nav-item nav-link " id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Description</a>
         </div>
       </nav>
       <div className="tab-content p-3" id="nav-tabContent">

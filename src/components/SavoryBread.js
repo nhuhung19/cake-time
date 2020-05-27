@@ -3,7 +3,7 @@ import Swiper from 'react-id-swiper';
 import savory_bread from "../images/savory-bread/savory-cake-3.jpg"
 import savory_bread_img from "../images/savory-bread/savory-cake-2.jpg"
 
-export default function SavoryBread() {
+export default function SavoryBread(props) {
     const params = {
         slidesPerView: 5,
         spaceBetween: 30,
@@ -18,7 +18,9 @@ export default function SavoryBread() {
       }
     return (
         <div className="mt-5 rounded">
-        <h1 className="text-center font-weight-bold my-3" style={{ color: "#B91319" }}>Savory Bread</h1>
+        <h1 className="text-center font-weight-bold my-3" style={{ color: "#B91319" }}>
+          {props.savoryBread? props.savoryBread.category : ""}
+        </h1>
         <Swiper {...params}>
           <div><img className="w-100 h-100 rounded" src={savory_bread} alt="" /></div>
           <div><img className="w-100 h-100 rounded" src={savory_bread} alt="" /></div>

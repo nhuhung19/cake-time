@@ -6,20 +6,7 @@ export default function UserPasswordPage() {
       <h4>Change Password</h4>
       <hr />
       <form>
-        <div class="form-group row">
-          <label for="inputPassword" class="col-sm-3 col-form-label">
-            Curernt Password
-          </label>
-          <div class="col-sm-9">
-            <input
-              type="password"
-              class="form-control"
-              id="inputPassword"
-              placeholder="Current Password"
-              required
-            />
-          </div>
-        </div>
+        
         <div class="form-group row">
           <label for="inputPassword3" class="col-sm-3 col-form-label">
             New Password

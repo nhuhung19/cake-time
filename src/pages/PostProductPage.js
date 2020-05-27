@@ -1,68 +1,143 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export default function PostProductPage() {
+  const [categorys, setCategory] = useState([]);
+  const [product, setProduct] = useState({});
+  useEffect(() => {
+    getCategory();
+  }, []);
+  const getCategory = async () => {
+    const res = await fetch(process.env.REACT_APP_SERVER + "/categorys");
+    const body = await res.json();
+    // console.log(body);
+    setCategory(body.data);
+  };
+  // console.log(categorys[2]? categorys[2].id: "")
+  const handleChange = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+  };
+  // console.log(product)
+  const createProduct = async (e) => {
+    e.preventDefault();
+    const selectedFile = document.getElementById("upload_form").files[0];
+    var formdata = new FormData();
+    formdata.append("image", selectedFile);
+    const res = await fetch("https://api.imgur.com/3/image", {
+      method: "POST",
+      headers: {
+        Authorization: `Client-ID ${process.env.REACT_APP_UPLOAD}`,
+      },
+      body: formdata,
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const dataProduct = { ...product, image: data.data.link }
+      if (data.success) {
+        const res = await fetch(process.env.REACT_APP_SERVER + "/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization :`Bearer ${localStorage.getItem("token")}`
+          },
+          body: JSON.stringify(dataProduct),
+
+        });
+        const body = await res.json();
+        if (res.status === 201) {
+          alert("Post successfully");
+        } else {
+          alert(`${body.error}`);
+        }
+      } else {
+        console.log("cannot upload because of", data.message);
+      }
+    } else {
+      alert("cannot upload");
+    }
+  };
   return (
     <div>
       <h4>Post Product</h4>
       <p>Create product to take money</p>
       <hr />
       <div>
-        <form>
-          <div class="form-group ">
-            <label for="inputTitle">Title</label>
+        <form onChange={handleChange} onSubmit={createProduct}>
+          <div className="form-group ">
+            <label htmlFor="inputTitle">Title</label>
             <input
               type="text"
-              class="form-control"
+              name="title"
+              className="form-control"
               id="inputTitle"
               placeholder="Title"
               required
             />
           </div>
-          <div class="form-group ">
-            <label for="inputDesc">Description</label>
-            <input
-              type="text"
-              class="form-control"
-              id="inputDesc"
-              placeholder="Description"
-              required
-            />
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="inputDesc">Description</label>
+              <input
+                type="text"
+                name="description"
+                className="form-control"
+                id="inputDesc"
+                placeholder="Description"
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="inputState">Type</label>
+              <select name="category" id="inputState" className="form-control">
+                <option>Choose...</option>
+                <option value={categorys[2] ? categorys[2].id : ""}>
+                  Pastry
+                </option>
+                <option value={categorys[0] ? categorys[0].id : ""}>
+                  Bread
+                </option>
+                <option value={categorys[1] ? categorys[1].id : ""}>
+                  Savory Bread
+                </option>
+              </select>
+            </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="inputStock">Stock</label>
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="inputStock">Stock</label>
               <input
                 type="number"
-                class="form-control"
+                name="stock"
+                className="form-control"
                 id="inputStock"
                 placeholder="Stock"
               />
             </div>
-            <div class="form-group col-md-4">
-              <label for="inputPrice">Price</label>
+            <div className="form-group col-md-6">
+              <label htmlFor="inputPrice">Price</label>
               <input
                 type="number"
-                class="form-control"
+                name="price"
+                className="form-control"
                 id="inputPrice"
                 placeholder="Price"
               />
             </div>
-            <div class="form-group col-md-4">
-              <label for="inputPicture">Picture</label>
-              <input
-                type="text"
-                class="form-control"
-                id="inputPicture"
-                placeholder="Picture"
-              />
-            </div>
+          </div>
+          <div class="form-group">
+            <div>Image</div>
+            <input
+              type="file"
+              name="image"
+              className=""
+              id="upload_form"
+              accept="image/png, image/jpeg"
+            />
           </div>
 
           <button
             style={{ backgroundColor: "#B91319" }}
             type="submit"
-            class="btn text-white"
+            className="btn text-white"
           >
             Post
           </button>

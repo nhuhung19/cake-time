@@ -38,7 +38,7 @@ export default function NavBar(props) {
             </span>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link to="/user/profile" className="dropdown-item" >Profile</Link>
-              <a className="dropdown-item" >Purchase History</a>
+              <Link to="/user/createproduct" className="dropdown-item" >Add Product</Link>
               <a className="dropdown-item" >Selling History</a>
             </div>
           </li>

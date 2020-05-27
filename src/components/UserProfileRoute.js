@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link, Route } from 'react-router-dom'
 import NavBar from './NavBar'
-import Banner from './Banner'
+import BannerProfile from './BannerProfile'
 import Footer from './Footer'
 
 export default function UserProfileRoute({exact, path, component:Component, ...props}) {
@@ -9,7 +9,7 @@ export default function UserProfileRoute({exact, path, component:Component, ...p
     <Route {...props} exact={exact} path={path} render={() =>(
       <div>
         <NavBar setUser={props.setUser} user={props.user}/>
-        <Banner />
+        <BannerProfile />
         <div className="container my-5">
           <div className="row">
             <div className="col-lg-3 ">
