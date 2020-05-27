@@ -16,6 +16,7 @@ import PostProductPage from "./pages/PostProductPage"
 // import AuthRouter from "./components/AuthRouter"
 import NoMoreLogin from "./components/NoMoreLogin"
 import './css/login.css'
+import './css/button.css'
 import './App.css';
 
 const NavRoute = ({exact, path, component:Component, ...props}) => (
@@ -24,6 +25,16 @@ const NavRoute = ({exact, path, component:Component, ...props}) => (
       <NavBar setUser={props.setUser} user={props.user}/>
       <Banner />
       <Component {...props} />
+      <Footer />
+    </div>
+  )} />
+)
+const SingleProductRoute = ({exact, path, component:Component, ...props}) => (
+  <Route {...props} exact={exact} path={path} render={() =>(
+    <div>
+      <NavBar setUser={props.setUser} user={props.user}/>
+      <Component {...props} />
+      <div className="divider-d-dashed mb-5"></div>
       <Footer />
     </div>
   )} />
@@ -62,7 +73,7 @@ function App() {
       <Switch>
         <NavRoute path="/" setUser={setUser} user={user} exact component={LandingPage}/>
         <NavRoute path="/category/:cId/products" setUser={setUser} user={user} exact component={ProductsPage}/>
-        <NavRoute path="/productId" setUser={setUser} user={user} exact component={SingleProduct}/>
+        <SingleProductRoute path="/category/:cId/products/:pId" setUser={setUser} user={user} exact component={SingleProduct}/>
         <UserProfileRoute path="/user/profile" setUser={setUser} user={user} exact component={UserProfilePage}/>
         <UserProfileRoute path="/user/products" setUser={setUser} user={user} exact component={UserProductsPage}/>
         <UserProfileRoute path="/user/password" setUser={setUser} user={user} exact component={UserPasswordPage}/>

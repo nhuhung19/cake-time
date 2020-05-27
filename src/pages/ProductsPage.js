@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/ClipLoader";
 import Pagination from "react-js-pagination";
@@ -44,7 +44,9 @@ export default function ProductsPage(props) {
       return (
         <div className="col-lg-3 col-md-6 mt-3">
           <div className=" img product-view w-100 ">
+            <Link to={`/category/${cId}/products/${el.id}`}>
             <img className="w-100 h-100 rounded" src={el.image} alt="" />
+            </Link>
             <div className="product-view-cart rounded-bottom w-100 f-center">
               <span
                 style={{ cursor: "pointer" }}

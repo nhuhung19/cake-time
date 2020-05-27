@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -40,22 +40,24 @@ export default function Bread(props) {
     products.map((el) => {
       return (
         <div className="px-3 h-100" key={el.id}>
-            <div>
+          <div>
+            <Link to={`/category/${category.id}/products/${el.id}`}>
               <img className="img w-100 rounded" src={el.image} alt="" />
-              <div>{el.title}</div>
-              <div style={{ display: "block" }}>{el.price}</div>
-            </div>
+            </Link>
+            <div>{el.title}</div>
+            <div style={{ display: "block" }}>{el.price}</div>
+          </div>
         </div>
       );
     });
   return (
     <div className="w-100 h-100">
       <h1 className="text-center font-weight-bold">
-        <Link
+        <Link className="px-2  sm-link sm-link_padding-all sm-link1"
           style={{ textDecoration: "none", color: "#B91319" }}
           to={`/category/${category.id}/products`}
         >
-          {category.category}
+          <span class="sm-link__label">{category.category}</span>
         </Link>
       </h1>
       <div
@@ -87,5 +89,5 @@ export default function Bread(props) {
         ;
       </div>
     </div>
-  )
+  );
 }

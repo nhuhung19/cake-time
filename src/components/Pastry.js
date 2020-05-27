@@ -42,23 +42,26 @@ export default function Pastry(props) {
       return (
         <div className=" h-100 px-3" key={el.id}>
           <div>
-            <img className="img w-100 rounded" src={el.image} alt="" />
+            <Link to={`/category/${category.id}/products/${el.id}`}>
+              <img className="img w-100 rounded" src={el.image} alt="" />
+            </Link>
             <div>{el.title}</div>
             <div style={{ display: "block" }}>{el.price}</div>
-            </div>
+          </div>
         </div>
       );
     });
   return (
     <div className="w-100 h-100">
       <h1 className="text-center font-weight-bold">
-        <Link
+        <Link className="px-2  sm-link sm-link_padding-all sm-link1"
           style={{ textDecoration: "none", color: "#B91319" }}
           to={`/category/${category.id}/products`}
         >
-          {category.category}
+          <span class="sm-link__label">{category.category}</span>
         </Link>
       </h1>
+      
       <div
         className="px-4 pt-4 rounded-lg shadow carousel-cake"
         style={{ backgroundColor: "white" }}
@@ -66,13 +69,11 @@ export default function Pastry(props) {
         {/* <div className="mb-3" style={{height :"1px" ,backgroundColor: "#B91319"}}> </div> */}
         <Carousel
           swipeable={false}
-          draggable
           responsive={responsive}
           ssr={true} // means to render carousel on server-side.
           infinite={true}
           autoPlay={true}
           centerMode={false}
-          minimumTouchDrag={80}
           autoPlaySpeed={2500}
           keyBoardControl={true}
           focusOnSelect={true}
