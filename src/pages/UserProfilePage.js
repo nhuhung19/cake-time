@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
+import {useHistory} from "react-router-dom"
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 
 export default function UserProfilePage(props) {
-  // console.log(props.user)
+  console.log(props.user)
   const [userProfile, setUserProfile] = useState({})
+  const history = useHistory()
   useEffect(() => {
+    checkUser()
     getUserProfile()
   },[])
   const getUserProfile = async () => {
@@ -16,6 +23,16 @@ export default function UserProfilePage(props) {
     const body = await res.json()
     setUserProfile(body.data)
     // console.log(body)
+  }
+  const checkUser = () =>{
+    if(!props.user){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You must login first!',
+      })
+      history.push("/")
+    }
   }
   const handleChange = (e) => {
     setUserProfile({...userProfile, [e.target.name]: e.target.value})
@@ -34,11 +51,18 @@ export default function UserProfilePage(props) {
     });
     const body = await res.json();
     if (res.status === 202) {
-      alert("Post successfully");
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Update user success',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } else {
       alert(`${body.error}`);
     }
   }
+  
   return (
     <div>
       <h4>My profile</h4>

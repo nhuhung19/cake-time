@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {Link, useHistory} from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 export default function RegisterPage() {
   const [newUser, setNewUser] = useState({})
@@ -21,7 +22,13 @@ export default function RegisterPage() {
     })
     const body = await res.json()
     if(res.status === 201){
-      alert("Register successfully, go to login")
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Sign up success',
+        showConfirmButton: false,
+        timer: 1500
+      })
       history.push("/login")
     }else {
       alert(`${body.error}`)

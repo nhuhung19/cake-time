@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
-export default function PostProductPage() {
+export default function PostProductPage(props) {
   const [categorys, setCategory] = useState([]);
   const [product, setProduct] = useState({});
+  const history = useHistory();
   useEffect(() => {
+    checkUser();
     getCategory();
   }, []);
   const getCategory = async () => {
@@ -11,6 +15,16 @@ export default function PostProductPage() {
     const body = await res.json();
     // console.log(body);
     setCategory(body.data);
+  };
+  const checkUser = () => {
+    if (!props.user) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You must login first!',
+      })
+      history.push("/")
+    }
   };
   // console.log(categorys[2]? categorys[2].id: "")
   const handleChange = (e) => {
@@ -31,28 +45,41 @@ export default function PostProductPage() {
     });
     if (res.ok) {
       const data = await res.json();
-      const dataProduct = { ...product, image: data.data.link }
+      const dataProduct = { ...product, image: data.data.link };
       if (data.success) {
         const res = await fetch(process.env.REACT_APP_SERVER + "/products", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            authorization :`Bearer ${localStorage.getItem("token")}`
+            authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify(dataProduct),
-
         });
         const body = await res.json();
         if (res.status === 201) {
-          alert("Post successfully");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Post product success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         } else {
-          alert(`${body.error}`);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${body.error}`,
+          })
         }
       } else {
         console.log("cannot upload because of", data.message);
       }
     } else {
-      alert("cannot upload");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong',
+      })
     }
   };
   return (

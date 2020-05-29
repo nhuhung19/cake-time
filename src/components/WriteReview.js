@@ -7,8 +7,6 @@ export default function WriteReview(props) {
     setReview({ ...review, [e.target.name]: e.target.value });
   };
   // console.log(review)
-  console.log(props.categoryId,"cId")
-  console.log(props.productId,"pId")
   const postReview = async (e) => {
     e.preventDefault();
     const res = await fetch(
@@ -43,7 +41,7 @@ export default function WriteReview(props) {
             name="review"
             className="form-control "
             id="validationTextarea"
-            placeholder="Please enter a review in here."
+            placeholder="Please enter review in here."
             required
           ></textarea>
           <div className="invalid-feedback">

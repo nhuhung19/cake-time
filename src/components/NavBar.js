@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
 export default function NavBar(props) {
   let [background, setBackground] = useState('nav-bar')
+  console.log(props.numProduct)
 
   const onScroll = () => {
     const backgroundcolor = window.scrollY < 100 ? "nav-bar" : "nav-bar-scroll";
@@ -25,12 +26,11 @@ export default function NavBar(props) {
   }
   // console.log(props.user)
   return (
-    <nav className={`navbar fixed-top ${background}`} >
+    <nav className={`navbar fixed-top py-3 ${background}`} >
       <div className="container">
         <Link style={{textDecoration: "none"}} to="/" className={`${background}`}>CAKE TIME</Link>
         <form className="form-inline">
-          <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-          <button className={`btn btn-outline-light my-2 my-sm-0 ${background}`} type="submit">Search</button>
+          
           <li style={{ listStyleType: "none" }} className="nav-item dropdown">
             <span className="px-2 pb-3">{(props.user && props.user.name) ? props.user.name : ""}</span>
             <span data-toggle="dropdown" className="ml-2">
@@ -43,7 +43,10 @@ export default function NavBar(props) {
             </div>
           </li>
 
-          <span className="ml-3"><i style={{ fontSize: "22px", cursor: "pointer" }} class="fas fa-cart-plus"></i></span>
+          <span className="ml-3">
+            <i style={{ fontSize: "22px", cursor: "pointer" }} class="fas fa-cart-plus"></i>
+            <span style={{fontSize: "10px"}}>{props.numProduct}</span>
+          </span>
           {(props.user && props.user.name) 
           ? <Link className={`${background} ml-2`} style={{ textDecoration: "none" }} onClick={logout} to="/login">Logout</Link> 
           : <Link className={`${background} ml-2`} style={{ textDecoration: "none" }} to="/login">Login</Link>}
