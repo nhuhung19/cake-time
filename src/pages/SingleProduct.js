@@ -60,7 +60,7 @@ export default function SingleProduct(props) {
               </p>
               <p>
                 <span>- Quantity: </span>
-                <input type="number" value="1" min="0" max="1000" step="1" />
+                <input type="number" value="1"  min="0" max="1000" step="1" />
               </p>
               <hr />
               <p>

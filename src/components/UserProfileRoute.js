@@ -8,7 +8,11 @@ export default function UserProfileRoute({exact, path, component:Component, ...p
   return (
     <Route {...props} exact={exact} path={path} render={() =>(
       <div>
-        <NavBar setUser={props.setUser} user={props.user}/>
+        <NavBar  
+         numProduct={props.numProduct} 
+         setNumProduct={props.setNumProduct}
+        setUser={props.setUser} 
+        user={props.user}/>
         <BannerProfile />
         <div className="container my-5">
           <div className="row">

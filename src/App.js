@@ -13,12 +13,38 @@ import UserProfilePage from "./pages/UserProfilePage";
 import UserProductsPage from "./pages/UserProductsPage";
 import UserPasswordPage from "./pages/UserPasswordPage";
 import PostProductPage from "./pages/PostProductPage";
+import CartPage from "./pages/CartPage";
 // import AuthRouter from "./components/AuthRouter"
 import NoMoreLogin from "./components/NoMoreLogin";
 import "./css/login.css";
 import "./css/button.css";
 import "./App.css";
 
+const NavBannerRoute = ({ exact, path, component: Component, ...props }) => (
+  <Route
+    {...props}
+    exact={exact}
+    path={path}
+    render={() => (
+      <div>
+        <NavBar
+          numProduct={props.numProduct}
+          setNumProduct={props.setNumProduct}
+          setUser={props.setUser}
+          user={props.user}
+        />
+        <Banner />
+        <Component
+          numProduct={props.numProduct}
+          setNumProduct={props.setNumProduct}
+          cartItems={props.cartItems}
+          {...props}
+        />
+        <Footer />
+      </div>
+    )}
+  />
+);
 const NavRoute = ({ exact, path, component: Component, ...props }) => (
   <Route
     {...props}
@@ -26,49 +52,56 @@ const NavRoute = ({ exact, path, component: Component, ...props }) => (
     path={path}
     render={() => (
       <div>
-        <NavBar 
-          numProduct={props.numProduct} 
-          setUser={props.setUser} 
-          user={props.user} />
-        <Banner />
-        <Component 
-          numProduct={props.numProduct} 
-          setNumProduct={props.setNumProduct} 
-          {...props} />
-        <Footer />
-      </div>
-    )}
-  />
-);
-const SingleProductRoute = ({
-  exact,
-  path,
-  component: Component,
-  ...props
-}) => (
-  <Route
-    {...props}
-    exact={exact}
-    path={path}
-    render={() => (
-      <div>
-        <NavBar numProduct={props.numProduct} setNumProduct={props.setNumProduct} setUser={props.setUser} user={props.user} />
-        <Component numProduct={props.numProduct} setNumProduct={props.setNumProduct} {...props} />
+        <NavBar
+          numProduct={props.numProduct}
+          setNumProduct={props.setNumProduct}
+          setUser={props.setUser}
+          user={props.user}
+        />
+        <Component
+          numProduct={props.numProduct}
+          setNumProduct={props.setNumProduct}
+          totalPrice={props.totalPrice}
+          user={props.user}
+          {...props}
+        />
         <div className="divider-d-dashed mb-5"></div>
         <Footer />
       </div>
     )}
   />
 );
-
 function App() {
   const [user, setUser] = useState(null);
   const [runUseEffect, setRunUseEffect] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(null);
   let [numProduct, setNumProduct] = useState(0);
   useEffect(async () => {
     await checkUser();
     setRunUseEffect(true);
   }, []);
+  const getUserCart = async () => {
+    const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const body = await res.json();
+    // console.log(body)
+    setNumProduct(body.totalQuantity);
+    // if (body.data && body.data.items.length !== 0) {
+    //   setCartItems(body.data.items);
+    //   console.log(body.data.items);
+    //   let sum = body.data.items.reduce(
+    //     (accumulator, currentValue) => accumulator + currentValue.total,
+    //     0
+    //   );
+    //   setTotalPrice(sum);
+    // }
+  };
   async function checkUser() {
     const urlToken = window.location.href.split("?token=")[1]
       ? window.location.href.split("?token=")[1].split("#_=_").join("")
@@ -81,10 +114,10 @@ function App() {
       headers: { authorization: `Bearer ${token}` },
     });
     const body = await res.json();
-    // console.log(body)
     if (body.status === "success") {
       setUser(body.data);
       localStorage.setItem("token", token);
+      getUserCart();
     } else {
       setUser(null);
       localStorage.removeItem("token");
@@ -94,10 +127,12 @@ function App() {
     return <div>...Loading</div>;
   }
 
+  // console.log(cartItems)
+  console.log(totalPrice);
   return (
     <div>
       <Switch>
-        <NavRoute
+        <NavBannerRoute
           path="/"
           setUser={setUser}
           user={user}
@@ -106,7 +141,7 @@ function App() {
           exact
           component={LandingPage}
         />
-        <NavRoute
+        <NavBannerRoute
           path="/category/:cId/products"
           setUser={setUser}
           user={user}
@@ -115,16 +150,29 @@ function App() {
           exact
           component={ProductsPage}
         />
-        <SingleProductRoute
+        <NavRoute
           path="/category/:cId/products/:pId"
           setUser={setUser}
-          numProduct={numProduct} 
+          numProduct={numProduct}
           setNumProduct={setNumProduct}
           user={user}
           exact
           component={SingleProduct}
         />
+        <NavRoute
+          path="/cart"
+          setUser={setUser}
+          totalPrice={totalPrice}
+          cartItems={cartItems}
+          numProduct={numProduct}
+          setNumProduct={setNumProduct}
+          user={user}
+          exact
+          component={CartPage}
+        />
         <UserProfileRoute
+          numProduct={numProduct}
+          setNumProduct={setNumProduct}
           path="/user/profile"
           user={user}
           exact

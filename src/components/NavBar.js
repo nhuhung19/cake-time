@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
 export default function NavBar(props) {
   let [background, setBackground] = useState('nav-bar')
-  console.log(props.numProduct)
+  // console.log(props.numProduct)
 
   const onScroll = () => {
     const backgroundcolor = window.scrollY < 100 ? "nav-bar" : "nav-bar-scroll";
@@ -20,6 +20,7 @@ export default function NavBar(props) {
     if(res.status === 204){
       localStorage.removeItem("token")
       props.setUser(null)
+      props.setNumProduct(0)
     } else{
       alert("can not logout")
     }
@@ -43,10 +44,11 @@ export default function NavBar(props) {
             </div>
           </li>
 
-          <span className="ml-3">
-            <i style={{ fontSize: "22px", cursor: "pointer" }} class="fas fa-cart-plus"></i>
+          <Link className={`${background}`} to="/cart"><span className="ml-3">
+           <i style={{ fontSize: "22px", cursor: "pointer" }} className="fas fa-cart-plus"></i>
             <span style={{fontSize: "10px"}}>{props.numProduct}</span>
           </span>
+          </Link>
           {(props.user && props.user.name) 
           ? <Link className={`${background} ml-2`} style={{ textDecoration: "none" }} onClick={logout} to="/login">Logout</Link> 
           : <Link className={`${background} ml-2`} style={{ textDecoration: "none" }} to="/login">Login</Link>}
