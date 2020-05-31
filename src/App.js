@@ -62,6 +62,7 @@ const NavRoute = ({ exact, path, component: Component, ...props }) => (
           numProduct={props.numProduct}
           setNumProduct={props.setNumProduct}
           totalPrice={props.totalPrice}
+          setTotalPrice={props.setTotalPrice}
           user={props.user}
           {...props}
         />
@@ -74,14 +75,14 @@ const NavRoute = ({ exact, path, component: Component, ...props }) => (
 function App() {
   const [user, setUser] = useState(null);
   const [runUseEffect, setRunUseEffect] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(null);
+  
   let [numProduct, setNumProduct] = useState(0);
   useEffect(async () => {
     await checkUser();
     setRunUseEffect(true);
   }, []);
   const getUserCart = async () => {
+    // console.log("=============")
     const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
       method: "GET",
       headers: {
@@ -92,23 +93,15 @@ function App() {
     const body = await res.json();
     // console.log(body)
     setNumProduct(body.totalQuantity);
-    // if (body.data && body.data.items.length !== 0) {
-    //   setCartItems(body.data.items);
-    //   console.log(body.data.items);
-    //   let sum = body.data.items.reduce(
-    //     (accumulator, currentValue) => accumulator + currentValue.total,
-    //     0
-    //   );
-    //   setTotalPrice(sum);
-    // }
+   console.log(numProduct)
   };
   async function checkUser() {
     const urlToken = window.location.href.split("?token=")[1]
       ? window.location.href.split("?token=")[1].split("#_=_").join("")
       : null;
     const localToken = localStorage.getItem("token");
+    console.log(localToken, "token")
     const token = urlToken || localToken;
-    console.log(token);
     if (!token) return;
     const res = await fetch(process.env.REACT_APP_SERVER + "/users/profile", {
       headers: { authorization: `Bearer ${token}` },
@@ -117,7 +110,7 @@ function App() {
     if (body.status === "success") {
       setUser(body.data);
       localStorage.setItem("token", token);
-      getUserCart();
+      getUserCart()
     } else {
       setUser(null);
       localStorage.removeItem("token");
@@ -127,8 +120,8 @@ function App() {
     return <div>...Loading</div>;
   }
 
-  // console.log(cartItems)
-  console.log(totalPrice);
+  console.log(numProduct)
+  // console.log(totalPrice);
   return (
     <div>
       <Switch>
@@ -162,8 +155,6 @@ function App() {
         <NavRoute
           path="/cart"
           setUser={setUser}
-          totalPrice={totalPrice}
-          cartItems={cartItems}
           numProduct={numProduct}
           setNumProduct={setNumProduct}
           user={user}

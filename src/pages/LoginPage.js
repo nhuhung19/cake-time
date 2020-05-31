@@ -19,8 +19,8 @@ export default function LoginPage(props) {
     })
     const body = await res.json()
     if(res.status === 201){
-      localStorage.setItem("token", body.data.jsonToken)
       props.setUser(body.data.user)
+      localStorage.setItem("token", body.data.jsonToken)
       history.push("/")
     } else {
       alert(`${body.error}`)

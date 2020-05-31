@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Review from "../components/Review";
 import WriteReview from "../components/WriteReview";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function SingleProduct(props) {
   const { pId } = useParams();
   const [product, setProduct] = useState({});
   const [reRender, setReRender] = useState(false);
+  const [quantity, setQuantity] = useState(1)
   // console.log(product)
 
   useEffect(() => {
@@ -18,6 +20,49 @@ export default function SingleProduct(props) {
     const body = await res.json();
     setProduct(body.data);
     // console.log(body.data)
+  };
+
+  const addToCart = async (e,id, product, price, image) => {
+    e.preventDefault()
+    if(!props.user){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You must login first",
+      })
+    }
+    else{
+      let productObj = { id, product, price, image, quantity: quantity*1};
+      console.log(productObj)
+      const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(productObj)
+      });
+      const body = await res.json()
+      if(res.status === 201){
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Add product success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        //  props.numProduct++ can't use this way (props is immutable)
+        let numInCart = props.numProduct + quantity*1
+        props.setNumProduct(numInCart)
+      }else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${body.error}`,
+        })
+      }
+    }
+    
   };
   return (
     <div style={{marginTop: "100px"}} className="">
@@ -58,18 +103,22 @@ export default function SingleProduct(props) {
               <p>
                 - Provider: {product && product.owner && product.owner.name}
               </p>
+              <form onSubmit={(e) => addToCart(e,product.id, product.title,product.price, product.image)}>
               <p>
                 <span>- Quantity: </span>
-                <input type="number" value="1"  min="0" max="1000" step="1" />
+                <input placeholder="0" type="number" onChange={(e) => setQuantity(e.target.value)} min="1" max={product.stock} required />
               </p>
               <hr />
-              <p>
-                <button type="button" class="btn btn-outline-success">
+                <button type="submit" 
+                
+                className="btn btn-outline-success">
                   Add to cart
                 </button>
-                <button type="button" class="ml-3 btn btn-outline-info">
+                <button type="button" className="ml-3 btn btn-outline-info">
                   Buy Now
                 </button>
+                </form>
+                <p>
               </p>
             </div>
           </div>

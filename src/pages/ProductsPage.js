@@ -19,7 +19,6 @@ export default function ProductsPage(props) {
   const [searching, setSearching] = useState(false);
   const [sort, setSort] = useState("");
   let [activePage, setActivePage] = useState(1);
-  const history = useHistory()
   let htmlProducts;
   useEffect(() => {
     getProductByCategory();
@@ -103,36 +102,37 @@ export default function ProductsPage(props) {
         title: 'Oops...',
         text: "You must login first",
       })
-      history.push("/")
-    }
-    let productObj = { id, product, price, image, quantity: 1 };
-    const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(productObj)
-    });
-    const body = await res.json()
-    if(res.status === 201){
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Add product success",
-        showConfirmButton: false,
-        timer: 1800,
+    }else{
+      let productObj = { id, product, price, image, quantity: 1 };
+      const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(productObj)
       });
-      //  props.numProduct++ can't use this way (props is immutable)
-      let numInCart = props.numProduct + 1
-      props.setNumProduct(numInCart)
-    }else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: `${body.error}`,
-      })
+      const body = await res.json()
+      if(res.status === 201){
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Add product success",
+          showConfirmButton: false,
+          timer: 1800,
+        });
+        //  props.numProduct++ can't use this way (props is immutable)
+        let numInCart = props.numProduct + 1
+        props.setNumProduct(numInCart)
+      }else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${body.error}`,
+        })
+      }
     }
+    
   };
 
   htmlProducts =
