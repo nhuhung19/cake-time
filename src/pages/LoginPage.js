@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import {Link, useHistory} from 'react-router-dom'
+import Swal from "sweetalert2";
+
+
 export default function LoginPage(props) {
   const [userLogin, setUserLogin] = useState({})
   const history = useHistory()
@@ -21,9 +24,14 @@ export default function LoginPage(props) {
     if(res.status === 201){
       props.setUser(body.data.user)
       localStorage.setItem("token", body.data.jsonToken)
+      props.checkUser()
       history.push("/")
     } else {
-      alert(`${body.error}`)
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${body.error}`,
+      });
     }
    }
 

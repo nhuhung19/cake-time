@@ -3,12 +3,16 @@ import Review from "../components/Review";
 import WriteReview from "../components/WriteReview";
 import { useParams, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import CreditCardInput from "react-credit-card-input";
 
 export default function SingleProduct(props) {
   const { pId } = useParams();
   const [product, setProduct] = useState({});
   const [reRender, setReRender] = useState(false);
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
+  let [cardNumber, setCardNumber] = useState("");
+  let [expiry, setExpiry] = useState("");
+  let [cvc, setCVC] = useState("");
   // console.log(product)
 
   useEffect(() => {
@@ -22,28 +26,26 @@ export default function SingleProduct(props) {
     // console.log(body.data)
   };
 
-  const addToCart = async (e,id, product, price, image) => {
-    e.preventDefault()
-    if(!props.user){
+  const addToCart = async (e, id, product, price, image) => {
+    e.preventDefault();
+    if (!props.user) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: "You must login first",
-      })
-    }
-    else{
-      let productObj = { id, product, price, image, quantity: quantity*1};
-      console.log(productObj)
+      });
+    } else {
+      let productObj = { id, product, price, image, quantity: quantity * 1 };
       const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(productObj)
+        body: JSON.stringify(productObj),
       });
-      const body = await res.json()
-      if(res.status === 201){
+      const body = await res.json();
+      if (res.status === 201) {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -52,20 +54,80 @@ export default function SingleProduct(props) {
           timer: 1500,
         });
         //  props.numProduct++ can't use this way (props is immutable)
-        let numInCart = props.numProduct + quantity*1
-        props.setNumProduct(numInCart)
-      }else {
+        let numInCart = props.numProduct + quantity * 1;
+        props.setNumProduct(numInCart);
+      } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
+          icon: "error",
+          title: "Oops...",
           text: `${body.error}`,
-        })
+        });
       }
     }
-    
   };
+
+  const onPurchase = async (e, id, product, price, image) => {
+    e.preventDefault();
+    if (!props.user) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You must login first",
+      });
+    } else {
+      const arrayExpiry = expiry.split(" / ");
+      let cc_exp_month = arrayExpiry[0];
+      let cc_exp_year = arrayExpiry[1];
+      // console.log(typeof cardNumber)
+      let creditCard = {
+        cc_number: cardNumber,
+        cc_cvc: cvc,
+        cc_exp_month,
+        cc_exp_year,
+      };
+      let productObj = { id, product, price, image, quantity: quantity * 1 };
+      const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(productObj),
+      });
+      if (res.status === 201) {
+        const res = await fetch(process.env.REACT_APP_SERVER + "/buy", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(creditCard),
+        });
+        if (res.status === 201) {
+          const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          if (res.status === 204) {
+           await getProducts();
+          }
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Puschasing complete",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    }
+  };
+
   return (
-    <div style={{marginTop: "100px"}} className="">
+    <div style={{ marginTop: "100px" }} className="">
       <div className="container mt-5">
         <div className="row ">
           <div className="col-lg-3">
@@ -86,7 +148,14 @@ export default function SingleProduct(props) {
               <hr />
               <p></p>
               <p>
-                - Price: <span className="font-weight-bold font-italic" style={{color: "#B91319"}}>$ </span>{product.price}
+                - Price:{" "}
+                <span
+                  className="font-weight-bold font-italic"
+                  style={{ color: "#B91319" }}
+                >
+                  ${" "}
+                </span>
+                {product.price}
                 <span className="ml-5">- Avaibility: {product.stock}</span>{" "}
                 <i
                   style={{ color: "#B91319" }}
@@ -103,23 +172,164 @@ export default function SingleProduct(props) {
               <p>
                 - Provider: {product && product.owner && product.owner.name}
               </p>
-              <form onSubmit={(e) => addToCart(e,product.id, product.title,product.price, product.image)}>
-              <p>
-                <span>- Quantity: </span>
-                <input placeholder="0" type="number" onChange={(e) => setQuantity(e.target.value)} min="1" max={product.stock} required />
-              </p>
-              <hr />
-                <button type="submit" 
-                
-                className="btn btn-outline-success">
+              <form
+                onSubmit={(e) =>
+                  addToCart(
+                    e,
+                    product.id,
+                    product.title,
+                    product.price,
+                    product.image
+                  )
+                }
+              >
+                <p>
+                  <span>- Quantity: </span>
+                  <input
+                    placeholder="0"
+                    type="number"
+                    onChange={(e) => setQuantity(e.target.value)}
+                    min="1"
+                    max={product.stock}
+                    required
+                  />
+                </p>
+                <hr />
+                <button style={{ backgroundColor: "#B91319", color: "white" }} type="submit" className="btn py-2">
                   Add to cart
                 </button>
-                <button type="button" className="ml-3 btn btn-outline-info">
+                <button
+                  type="button"
+                  style={{ backgroundColor: "#03CEA4", color: "white" }} className="ml-3 btn py-2"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                >
                   Buy Now
                 </button>
-                </form>
-                <p>
-              </p>
+              </form>
+              <p></p>
+            </div>
+            <div
+              className="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">
+                      Complete Purchase
+                    </h5>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form
+                    onSubmit={(e) =>
+                      onPurchase(
+                        e,
+                        product.id,
+                        product.title,
+                        product.price,
+                        product.image
+                      )
+                    }
+                  >
+                    <div className="modal-body">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputName">Full Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="inputName"
+                            placeholder="Full Name"
+                            required
+                          />
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputPhone">Phone</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="inputPhone"
+                            placeholder="Phone Number"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputAddress"
+                          placeholder="1234 Main St"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="inputEmail">Email</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="inputEmail"
+                          placeholder="example@gmail.com"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <CreditCardInput
+                        cardCVCInputRenderer={({
+                          handleCardCVCChange,
+                          props,
+                        }) => (
+                          <input
+                            {...props}
+                            onChange={handleCardCVCChange((e) =>
+                              setCVC(e.target.value)
+                            )}
+                          />
+                        )}
+                        cardExpiryInputRenderer={({
+                          handleCardExpiryChange,
+                          props,
+                        }) => (
+                          <input
+                            {...props}
+                            onChange={handleCardExpiryChange((e) =>
+                              setExpiry(e.target.value)
+                            )}
+                          />
+                        )}
+                        cardNumberInputRenderer={({
+                          handleCardNumberChange,
+                          props,
+                        }) => (
+                          <input
+                            {...props}
+                            onChange={handleCardNumberChange((e) =>
+                              setCardNumber(e.target.value)
+                            )}
+                          />
+                        )}
+                      />
+                      <button type="submit" className="btn btn-primary">
+                        Purchase
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>

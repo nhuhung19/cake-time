@@ -23,7 +23,7 @@ export default function ProductsPage(props) {
   useEffect(() => {
     getProductByCategory();
   }, []);
-  console.log(props.numProduct)
+  // console.log(props.numProduct);
   const getProductByCategory = async () => {
     const res = await fetch(
       process.env.REACT_APP_SERVER + `/products/category/${cId}?page=1&limit=8`
@@ -96,13 +96,13 @@ export default function ProductsPage(props) {
   }; // console.log(products);
 
   const addToCart = async (id, product, price, image) => {
-    if(!props.user){
+    if (!props.user) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: "You must login first",
-      })
-    }else{
+      });
+    } else {
       let productObj = { id, product, price, image, quantity: 1 };
       const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
         method: "POST",
@@ -110,10 +110,10 @@ export default function ProductsPage(props) {
           "Content-Type": "application/json",
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(productObj)
+        body: JSON.stringify(productObj),
       });
-      const body = await res.json()
-      if(res.status === 201){
+      const body = await res.json();
+      if (res.status === 201) {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -122,17 +122,16 @@ export default function ProductsPage(props) {
           timer: 1800,
         });
         //  props.numProduct++ can't use this way (props is immutable)
-        let numInCart = props.numProduct + 1
-        props.setNumProduct(numInCart)
-      }else {
+        let numInCart = props.numProduct + 1;
+        props.setNumProduct(numInCart);
+      } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
+          icon: "error",
+          title: "Oops...",
           text: `${body.error}`,
-        })
+        });
       }
     }
-    
   };
 
   htmlProducts =
@@ -168,13 +167,15 @@ export default function ProductsPage(props) {
                 </span>
               </div>
               <div className="product-quick-view rounded-top w-100 f-center">
-                <span
-                  style={{ cursor: "pointer" }}
-                  className="font-weight-lighter"
-                >
-                  <i class="fas fa-random"></i>
-                  Quick View
-                </span>
+                <Link style={{textDecoration: "none", color: "#B91319"}} to={`/category/${cId}/products/${el.id}`}>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    className="font-weight-lighter"
+                  >
+                    <i class="fas fa-random"></i>
+                    Quick View
+                  </span>
+                </Link>
               </div>
             </div>
             <div className="d-flex mt-2">
@@ -217,9 +218,7 @@ export default function ProductsPage(props) {
             style={{ border: "1px solid #ddd" }}
             className="bg-white p-3 rounded-lg w-100 mt-4"
           >
-            <h4 style={{ color: "#03CEA4", textDecoration: "underline" }}>
-              Sort
-            </h4>
+            <h4 style={{ color: "#03CEA4" }}>Sort</h4>
             <div
               style={{ color: "#B91319", fontSize: "18px" }}
               className="text-left"
@@ -345,6 +344,7 @@ export default function ProductsPage(props) {
           </div>
         </div>
       </div>
+      <div className="divider-d-dashed my-5"></div>
     </div>
   );
 }

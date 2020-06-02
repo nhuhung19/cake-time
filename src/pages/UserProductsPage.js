@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "react-js-pagination";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 export default function UserProductsPage() {
   const [userProducts, setUserProducts] = useState([]);
@@ -8,53 +8,57 @@ export default function UserProductsPage() {
   let [activePage, setActivePage] = useState(1);
   useEffect(() => {
     getProductsByUser();
-  },[]);
+  }, []);
 
   const getProductsByUser = async () => {
-    const res = await fetch(process.env.REACT_APP_SERVER + "/products/user?page=1&limit=10", {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const res = await fetch(
+      process.env.REACT_APP_SERVER + "/products/user?page=1&limit=10",
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     const body = await res.json();
     setTotalProducts(body.countProducts);
     setUserProducts(body.data.userProducts);
-    console.log(body.data.userProducts, "page")
+    console.log(body.data.userProducts, "page");
   };
   const handlePageChange = async (pageNumber) => {
     setActivePage(pageNumber);
     const res = await fetch(
       process.env.REACT_APP_SERVER +
-        `/products/user?page=${pageNumber}&limit=10`,{
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+        `/products/user?page=${pageNumber}&limit=10`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     const body = await res.json();
-    
+
     setUserProducts(body.data.userProducts);
   };
 
   const onDeleteProduct = async (pId) => {
-    console.log(pId)
+    console.log(pId);
     const res = await fetch(process.env.REACT_APP_SERVER + `/products/${pId}`, {
       method: "DELETE",
       headers: {
         authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    if(res.status === 204){
+    if (res.status === 204) {
       Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Delete product success',
+        position: "center",
+        icon: "success",
+        title: "Delete product success",
         showConfirmButton: false,
-        timer: 1800
+        timer: 1800,
       });
-      getProductsByUser()
+      getProductsByUser();
     }
-  }
+  };
 
   let htmlProducts =
     userProducts.length !== 0 ? (
@@ -66,8 +70,16 @@ export default function UserProductsPage() {
             <td>{el.price}</td>
             <td>{el.ratingAverage}</td>
             <td>{el.stock}</td>
-            <td><i style={{cursor: "pointer"}} className="fas fa-edit"></i></td>
-            <td><i style={{cursor: "pointer"}} onClick={() => onDeleteProduct(el.id)} className="fas fa-trash-alt"></i></td>
+            <td>
+              <i style={{ cursor: "pointer" }} className="fas fa-edit"></i>
+            </td>
+            <td>
+              <i
+                style={{ cursor: "pointer" }}
+                onClick={() => onDeleteProduct(el.id)}
+                className="fas fa-trash-alt"
+              ></i>
+            </td>
           </tr>
         );
       })
@@ -88,22 +100,20 @@ export default function UserProductsPage() {
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        <tbody>
-          {htmlProducts}
-        </tbody>
+        <tbody>{htmlProducts}</tbody>
       </table>
-        <div className="d-flex justify-content-center w-100 mt-4">
-              <Pagination
-                className="pagination-style"
-                activePage={activePage}
-                itemsCountPerPage={10}
-                totalItemsCount={totalProducts}
-                pageRangeDisplayed={5}
-                onChange={handlePageChange}
-                itemClass="page-item"
-                linkClass="page-link"
-              />
-            </div>
+      <div className="d-flex justify-content-center w-100 mt-4">
+        <Pagination
+          className="pagination-style"
+          activePage={activePage}
+          itemsCountPerPage={10}
+          totalItemsCount={totalProducts}
+          pageRangeDisplayed={5}
+          onChange={handlePageChange}
+          itemClass="page-item"
+          linkClass="page-link"
+        />
+      </div>
     </div>
   );
 }

@@ -44,8 +44,8 @@ export default function Bread(props) {
               <Link to={`/category/${category.id}/products/${el.id}`}>
               <img className="img w-100 rounded" src={el.image} alt="" />
               </Link>
-              <div>{el.title}</div>
-              <div style={{ display: "block" }}>{el.price}</div>
+              <div style={{color: "#B91319"}} className="text-center mt-2">{el.title}</div>
+              <div className="text-center">Price: <span style={{ color: "#03CEA4" }} >${el.price}</span></div>
             </div>
         </div>
       );
@@ -53,7 +53,7 @@ export default function Bread(props) {
   return (
     <div className="w-100 h-100">
       <h1 className="text-center font-weight-bold">
-        <Link className="px-2  sm-link sm-link_padding-all sm-link1"
+        <Link className="px-2 sm-link sm-link_padding-all sm-link1"
           style={{ textDecoration: "none", color: "#B91319" }}
           to={`/category/${category.id}/products`}
         >

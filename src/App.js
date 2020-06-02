@@ -11,6 +11,7 @@ import SingleProduct from "./pages/SingleProduct";
 import UserProfileRoute from "./components/UserProfileRoute";
 import UserProfilePage from "./pages/UserProfilePage";
 import UserProductsPage from "./pages/UserProductsPage";
+import UserListOrder from "./pages/UserListOrder";
 import UserPasswordPage from "./pages/UserPasswordPage";
 import PostProductPage from "./pages/PostProductPage";
 import CartPage from "./pages/CartPage";
@@ -75,7 +76,7 @@ const NavRoute = ({ exact, path, component: Component, ...props }) => (
 function App() {
   const [user, setUser] = useState(null);
   const [runUseEffect, setRunUseEffect] = useState(false);
-  
+
   let [numProduct, setNumProduct] = useState(0);
   useEffect(async () => {
     await checkUser();
@@ -93,14 +94,12 @@ function App() {
     const body = await res.json();
     // console.log(body)
     setNumProduct(body.totalQuantity);
-   console.log(numProduct)
   };
   async function checkUser() {
     const urlToken = window.location.href.split("?token=")[1]
       ? window.location.href.split("?token=")[1].split("#_=_").join("")
       : null;
     const localToken = localStorage.getItem("token");
-    console.log(localToken, "token")
     const token = urlToken || localToken;
     if (!token) return;
     const res = await fetch(process.env.REACT_APP_SERVER + "/users/profile", {
@@ -110,7 +109,7 @@ function App() {
     if (body.status === "success") {
       setUser(body.data);
       localStorage.setItem("token", token);
-      getUserCart()
+      getUserCart();
     } else {
       setUser(null);
       localStorage.removeItem("token");
@@ -120,8 +119,7 @@ function App() {
     return <div>...Loading</div>;
   }
 
-  console.log(numProduct)
-  // console.log(totalPrice);
+  // console.log(user);
   return (
     <div>
       <Switch>
@@ -170,23 +168,38 @@ function App() {
           component={UserProfilePage}
         />
         <UserProfileRoute
+          numProduct={numProduct}
+          setNumProduct={setNumProduct}
           path="/user/products"
           user={user}
           exact
           component={UserProductsPage}
         />
         <UserProfileRoute
+          numProduct={numProduct}
+          setNumProduct={setNumProduct}
           path="/user/password"
           user={user}
           exact
           component={UserPasswordPage}
         />
         <UserProfileRoute
-          path="/user/createproduct"
+          numProduct={numProduct}
+          setNumProduct={setNumProduct}
+          path="/user/create-product"
           setUser={setUser}
           user={user}
           exact
           component={PostProductPage}
+        />
+        <UserProfileRoute
+          numProduct={numProduct}
+          setNumProduct={setNumProduct}
+          path="/user/products-order"
+          setUser={setUser}
+          user={user}
+          exact
+          component={UserListOrder}
         />
         <NoMoreLogin
           path="/login"
@@ -194,6 +207,7 @@ function App() {
           setUser={setUser}
           exact
           component={LoginPage}
+          checkUser={checkUser}
         />
         <NoMoreLogin
           path="/register"

@@ -45,8 +45,8 @@ export default function Pastry(props) {
             <Link to={`/category/${category.id}/products/${el.id}`}>
               <img className="img w-100 rounded" src={el.image} alt="" />
             </Link>
-            <div>{el.title}</div>
-            <div style={{ display: "block" }}>{el.price}</div>
+            <div style={{color: "#B91319"}} className="text-center mt-2">{el.title}</div>
+            <div className="text-center">Price: <span style={{ color: "#03CEA4" }}>${el.price}</span></div>
           </div>
         </div>
       );

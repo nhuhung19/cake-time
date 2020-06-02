@@ -17,7 +17,7 @@ export default function Review(props) {
     const body = await res.json();
     setReviews(body.data);
     setTotalReview(body.total);
-    console.log(body);
+    // console.log(body);
   };
   const handlePageChange = async (pageNumber) => {
     setActivePage(pageNumber);
@@ -60,8 +60,9 @@ export default function Review(props) {
   return (
     <div>
       <h2>
-        Products Rating: {props.ratingAverage}
+        Products Rating: <span className="font-weight-bold" style={{fontSize: "25px",color: "#B91319"}}>{props.ratingAverage}</span>/5
         <i style={{ color: "#B91319" }} class="fas fa-star"></i>
+        
       </h2>
       <p>
         Total Review: <span>{totalReview}</span>

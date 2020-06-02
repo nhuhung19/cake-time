@@ -33,6 +33,25 @@ body{
     font-size: 20px;
     color: white !important;
 }
+.cart-icon{
+    position: relative;
+}
+.num-product {
+    position: absolute;
+    top: 0.5;
+    right: 0.5;
+}
+.nav-bar-scroll .num-product {
+    background-color: white;
+    color: #B91319 !important;
+    padding: 0 5px 0 5px
+}
+.nav-bar .num-product {
+    background-color: #B91319;
+    color: white !important;
+    padding: 0 5px 0 5px
+}
+
 .promotions {
     background-image: url(../src/images/promotions.jpg);
     background-repeat: no-repeat;
@@ -129,7 +148,7 @@ body{
     overflow: hidden;
 }
 .product-view-cart{
-    background-color: rgba(128, 128, 128, 0.185);
+    background-color: rgba(255, 255, 255, 0.5);
     height: 45px;
     position: absolute;
     color: #B91319;
@@ -141,7 +160,7 @@ body{
 .product-quick-view{
     position: absolute;
     height: 45px;
-    background-color: rgba(128, 128, 128, 0.185);;
+    background-color: rgba(255, 255, 255, 0.507);
     color: #B91319;
     transition: all 0.7s;
     top: -30%;
@@ -185,6 +204,24 @@ body{
     right: -5%;
     
 } */
+
+.sc-AxjAm {
+    margin-left: auto;
+    margin-right: auto;
+}
+.ReactModal__Content .ReactModal__Content--after-open{
+    transition: linear;
+    transition-duration: 0.7s;
+}
+.ReactModal__Overlay .ReactModal__Overlay--after-open{
+    transition: all 0.7s;
+}
+.ReactModalPortal {
+    transition: all 0.7s;
+}
+.ReactModal__Body--open {
+    transition: all 0.7s;
+}
 
 @media (min-width: 576px) {
     .img {

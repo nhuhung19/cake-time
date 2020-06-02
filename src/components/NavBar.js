@@ -34,24 +34,25 @@ export default function NavBar(props) {
           
           <li style={{ listStyleType: "none" }} className="nav-item dropdown">
             <span className="px-2 pb-3">{(props.user && props.user.name) ? props.user.name : ""}</span>
-            <span data-toggle="dropdown" className="ml-2">
-              <i style={{ fontSize: "22px", cursor: "pointer" }} class="fas fa-user-circle"></i>
+            <span data-toggle="dropdown" className=" ml-2">
+              <i style={{ fontSize: "22px", cursor: "pointer" }} className="fas fa-user-circle"></i>
             </span>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link to="/user/profile" className="dropdown-item" >Profile</Link>
-              <Link to="/user/createproduct" className="dropdown-item" >Add Product</Link>
-              <a className="dropdown-item" >Selling History</a>
+              <Link to="/user/create-product" className="dropdown-item" >Add Product</Link>
+              <Link to="/user/products-order" className="dropdown-item" >Purchase History</Link>
             </div>
           </li>
 
-          <Link className={`${background}`} to="/cart"><span className="ml-3">
+          <Link style={{textDecoration: "none"}} className={`${background}`} to="/cart">
+          <span className="ml-3 cart-icon">
            <i style={{ fontSize: "22px", cursor: "pointer" }} className="fas fa-cart-plus"></i>
-            <span style={{fontSize: "10px"}}>{props.numProduct}</span>
+            <span className={`${background} font-weight-bold num-product rounded-circle`} style={{fontSize: "12px"}}>{props.numProduct}</span>
           </span>
           </Link>
           {(props.user && props.user.name) 
-          ? <Link className={`${background} ml-2`} style={{ textDecoration: "none" }} onClick={logout} to="/login">Logout</Link> 
-          : <Link className={`${background} ml-2`} style={{ textDecoration: "none" }} to="/login">Login</Link>}
+          ? <Link className={`${background} ml-4`} style={{ textDecoration: "none" }} onClick={logout} to="/login">Logout</Link> 
+          : <Link className={`${background} ml-4`} style={{ textDecoration: "none" }} to="/login">Login</Link>}
         </form>
       </div>
     </nav>
