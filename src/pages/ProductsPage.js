@@ -64,6 +64,7 @@ export default function ProductsPage(props) {
 
   const sortLowToHigh = async () => {
     setSort("price");
+    setActivePage(1);
     const res = await fetch(
       process.env.REACT_APP_SERVER +
         `/products/category/${cId}?sort=price&page=1&limit=8`
@@ -73,6 +74,7 @@ export default function ProductsPage(props) {
   };
   const sortHighToLow = async () => {
     setSort("-price");
+    setActivePage(1);
     const res = await fetch(
       process.env.REACT_APP_SERVER +
         `/products/category/${cId}?sort=-price&page=1&limit=8`
@@ -87,6 +89,7 @@ export default function ProductsPage(props) {
   };
   const sortNewest = async () => {
     setSort("-createdAt");
+    setActivePage(1);
     const res = await fetch(
       process.env.REACT_APP_SERVER +
         `/products/category/${cId}?sort=-createdAt&page=1&limit=8`

@@ -12,6 +12,7 @@ import UserProfileRoute from "./components/UserProfileRoute";
 import UserProfilePage from "./pages/UserProfilePage";
 import UserProductsPage from "./pages/UserProductsPage";
 import UserListOrder from "./pages/UserListOrder";
+import UserListSold from './pages/UserListSold'
 import UserPasswordPage from "./pages/UserPasswordPage";
 import PostProductPage from "./pages/PostProductPage";
 import CartPage from "./pages/CartPage";
@@ -61,6 +62,7 @@ const NavRoute = ({ exact, path, component: Component, ...props }) => (
         />
         <Component
           numProduct={props.numProduct}
+          checkUser={props.checkUser}
           setNumProduct={props.setNumProduct}
           totalPrice={props.totalPrice}
           setTotalPrice={props.setTotalPrice}
@@ -146,6 +148,7 @@ function App() {
           setUser={setUser}
           numProduct={numProduct}
           setNumProduct={setNumProduct}
+          checkUser={checkUser}
           user={user}
           exact
           component={SingleProduct}
@@ -200,6 +203,15 @@ function App() {
           user={user}
           exact
           component={UserListOrder}
+        />
+        <UserProfileRoute
+          numProduct={numProduct}
+          setNumProduct={setNumProduct}
+          path="/user/products-sold"
+          setUser={setUser}
+          user={user}
+          exact
+          component={UserListSold}
         />
         <NoMoreLogin
           path="/login"

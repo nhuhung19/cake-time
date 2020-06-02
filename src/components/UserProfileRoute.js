@@ -40,13 +40,16 @@ export default function UserProfileRoute({
                     <Link to="/user/password">Change Password</Link>
                   </p>
                   <p>
-                    <Link to="/user/products">Products</Link>
-                  </p>
-                  <p>
                     <Link to="/user/create-product">Post Product</Link>
                   </p>
                   <p>
+                    <Link to="/user/products">Products</Link>
+                  </p>
+                  <p>
                     <Link to="/user/products-order">Product Order</Link>
+                  </p>
+                  <p>
+                    <Link to="/user/products-sold">Product Sold</Link>
                   </p>
                 </div>
               </div>

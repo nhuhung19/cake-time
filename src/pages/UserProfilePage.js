@@ -6,7 +6,7 @@ import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 
 export default function UserProfilePage(props) {
-  console.log(props.user)
+  // console.log(props.user)
   const [userProfile, setUserProfile] = useState({})
   const history = useHistory()
   useEffect(() => {

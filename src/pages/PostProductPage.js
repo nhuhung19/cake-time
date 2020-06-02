@@ -33,6 +33,7 @@ export default function PostProductPage(props) {
   // console.log(product)
   const createProduct = async (e) => {
     e.preventDefault();
+    document.getElementById('submitButton').disabled = true;
     const selectedFile = document.getElementById("upload_form").files[0];
     var formdata = new FormData();
     formdata.append("image", selectedFile);
@@ -64,6 +65,7 @@ export default function PostProductPage(props) {
             showConfirmButton: false,
             timer: 1500,
           });
+          document.getElementById('submitButton').disabled = false;
         } else {
           Swal.fire({
             icon: 'error',
@@ -165,6 +167,7 @@ export default function PostProductPage(props) {
             style={{ backgroundColor: "#B91319" }}
             type="submit"
             className="btn text-white"
+            id="submitButton"
           >
             Post
           </button>

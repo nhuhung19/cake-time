@@ -41,23 +41,34 @@ export default function UserProductsPage() {
   };
 
   const onDeleteProduct = async (pId) => {
-    console.log(pId);
-    const res = await fetch(process.env.REACT_APP_SERVER + `/products/${pId}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    if (res.status === 204) {
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Delete product success",
-        showConfirmButton: false,
-        timer: 1800,
-      });
-      getProductsByUser();
-    }
+    // console.log(pId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.value) {
+        const res = await fetch(process.env.REACT_APP_SERVER + `/products/${pId}`, {
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (res.status === 204) {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+          getProductsByUser();
+        }
+      }
+    })
+    
   };
 
   let htmlProducts =
@@ -84,7 +95,7 @@ export default function UserProductsPage() {
         );
       })
     ) : (
-      <h1>You don't have data yet!</h1>
+      <h6 className="mt-5 text-center">You don't have data yet!</h6>
     );
   return (
     <div>

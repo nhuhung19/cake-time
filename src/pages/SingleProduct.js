@@ -1,23 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import Review from "../components/Review";
 import WriteReview from "../components/WriteReview";
 import { useParams, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import CreditCardInput from "react-credit-card-input";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function SingleProduct(props) {
   const { pId } = useParams();
   const [product, setProduct] = useState({});
   const [reRender, setReRender] = useState(false);
+  const [show, setShow] = useState(false);
   const [quantity, setQuantity] = useState(1);
   let [cardNumber, setCardNumber] = useState("");
   let [expiry, setExpiry] = useState("");
   let [cvc, setCVC] = useState("");
-  // console.log(product)
-
+  const [modalIsOpen, setIsOpen] = useState(false);
   useEffect(() => {
     getProducts();
   }, []);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  let subtitle;
+  function openModal() {
+    setIsOpen(true);
+  }
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = "#f00";
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const getProducts = async () => {
     const res = await fetch(process.env.REACT_APP_SERVER + `/products/${pId}`);
@@ -68,6 +83,7 @@ export default function SingleProduct(props) {
 
   const onPurchase = async (e, id, product, price, image) => {
     e.preventDefault();
+    document.getElementById("purchase-btn").disabled = true;
     if (!props.user) {
       Swal.fire({
         icon: "error",
@@ -112,7 +128,7 @@ export default function SingleProduct(props) {
             },
           });
           if (res.status === 204) {
-           await getProducts();
+            await getProducts();
           }
           Swal.fire({
             position: "center",
@@ -121,6 +137,9 @@ export default function SingleProduct(props) {
             showConfirmButton: false,
             timer: 1500,
           });
+          document.getElementById("purchase-btn").disabled = false;
+          props.checkUser();
+          handleClose();
         }
       }
     }
@@ -195,142 +214,131 @@ export default function SingleProduct(props) {
                   />
                 </p>
                 <hr />
-                <button style={{ backgroundColor: "#B91319", color: "white" }} type="submit" className="btn py-2">
+                <button
+                  style={{ backgroundColor: "#B91319", color: "white" }}
+                  type="submit"
+                  className="btn py-2"
+                >
                   Add to cart
                 </button>
                 <button
                   type="button"
-                  style={{ backgroundColor: "#03CEA4", color: "white" }} className="ml-3 btn py-2"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
+                  style={{ backgroundColor: "#03CEA4", color: "white" }}
+                  className="ml-3 btn py-2"
+                  onClick={handleShow}
                 >
                   Buy Now
                 </button>
               </form>
               <p></p>
             </div>
-            <div
-              className="modal fade"
-              id="exampleModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
-                      Complete Purchase
-                    </h5>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <form
-                    onSubmit={(e) =>
-                      onPurchase(
-                        e,
-                        product.id,
-                        product.title,
-                        product.price,
-                        product.image
-                      )
-                    }
-                  >
-                    <div className="modal-body">
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="inputName">Full Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="inputName"
-                            placeholder="Full Name"
-                            required
-                          />
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="inputPhone">Phone</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="inputPhone"
-                            placeholder="Phone Number"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputAddress">Address</label>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form
+                  onSubmit={(e) =>
+                    onPurchase(
+                      e,
+                      product.id,
+                      product.title,
+                      product.price,
+                      product.image
+                    )
+                  }
+                >
+                  <div className="modal-body">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputName">Full Name</label>
                         <input
                           type="text"
                           class="form-control"
-                          id="inputAddress"
-                          placeholder="1234 Main St"
+                          id="inputName"
+                          placeholder="Full Name"
                           required
                         />
                       </div>
-                      <div class="form-group">
-                        <label for="inputEmail">Email</label>
+                      <div class="form-group col-md-6">
+                        <label for="inputPhone">Phone</label>
                         <input
-                          type="email"
+                          type="text"
                           class="form-control"
-                          id="inputEmail"
-                          placeholder="example@gmail.com"
+                          id="inputPhone"
+                          placeholder="Phone Number"
                           required
                         />
                       </div>
                     </div>
-                    <div className="modal-footer">
-                      <CreditCardInput
-                        cardCVCInputRenderer={({
-                          handleCardCVCChange,
-                          props,
-                        }) => (
-                          <input
-                            {...props}
-                            onChange={handleCardCVCChange((e) =>
-                              setCVC(e.target.value)
-                            )}
-                          />
-                        )}
-                        cardExpiryInputRenderer={({
-                          handleCardExpiryChange,
-                          props,
-                        }) => (
-                          <input
-                            {...props}
-                            onChange={handleCardExpiryChange((e) =>
-                              setExpiry(e.target.value)
-                            )}
-                          />
-                        )}
-                        cardNumberInputRenderer={({
-                          handleCardNumberChange,
-                          props,
-                        }) => (
-                          <input
-                            {...props}
-                            onChange={handleCardNumberChange((e) =>
-                              setCardNumber(e.target.value)
-                            )}
-                          />
-                        )}
+                    <div class="form-group">
+                      <label for="inputAddress">Address</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="inputAddress"
+                        placeholder="1234 Main St"
+                        required
                       />
-                      <button type="submit" className="btn btn-primary">
-                        Purchase
-                      </button>
                     </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+                    <div class="form-group">
+                      <label for="inputEmail">Email</label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="inputEmail"
+                        placeholder="example@gmail.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <CreditCardInput
+                      cardCVCInputRenderer={({
+                        handleCardCVCChange,
+                        props,
+                      }) => (
+                        <input
+                          {...props}
+                          onChange={handleCardCVCChange((e) =>
+                            setCVC(e.target.value)
+                          )}
+                        />
+                      )}
+                      cardExpiryInputRenderer={({
+                        handleCardExpiryChange,
+                        props,
+                      }) => (
+                        <input
+                          {...props}
+                          onChange={handleCardExpiryChange((e) =>
+                            setExpiry(e.target.value)
+                          )}
+                        />
+                      )}
+                      cardNumberInputRenderer={({
+                        handleCardNumberChange,
+                        props,
+                      }) => (
+                        <input
+                          {...props}
+                          onChange={handleCardNumberChange((e) =>
+                            setCardNumber(e.target.value)
+                          )}
+                        />
+                      )}
+                    />
+                    <button
+                      id="purchase-btn"
+                      type="submit"
+                      className="btn btn-primary"
+                    >
+                      Purchase
+                    </button>
+                  </div>
+                </form>
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
         <div className="rounded-lg bg-white my-5">
