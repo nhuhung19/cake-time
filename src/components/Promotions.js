@@ -1,7 +1,4 @@
 import React from 'react'
-import sweet_cake from "../images/picture-birthday-cake.jpg"
-import bread from "../images/bread-cake.jpg"
-import savory_bread from "../images/savory-bread.jpg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import { faGifts } from '@fortawesome/free-solid-svg-icons'

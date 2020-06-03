@@ -52,6 +52,12 @@ body{
     padding: 0 5px 0 5px
 }
 
+.nav-brand {
+    font-family: 'Parisienne', cursive;
+    font-size: 25px;
+    font-weight: bold;
+}
+
 .promotions {
     background-image: url(../src/images/promotions.jpg);
     background-repeat: no-repeat;

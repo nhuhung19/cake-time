@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
+import logo from '../images/logo.png'
 export default function NavBar(props) {
   let [background, setBackground] = useState('nav-bar')
   // console.log(props.numProduct)
@@ -29,7 +30,9 @@ export default function NavBar(props) {
   return (
     <nav className={`navbar fixed-top py-3 ${background}`} >
       <div className="container">
-        <Link style={{textDecoration: "none"}} to="/" className={`${background}`}>CAKE TIME</Link>
+        <Link style={{textDecoration: "none"}} to="/" className={`${background} nav-brand`}>
+          Cake Time
+        </Link>
         <form className="form-inline">
           
           <li style={{ listStyleType: "none" }} className="nav-item dropdown">
