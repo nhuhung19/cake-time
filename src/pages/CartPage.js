@@ -110,15 +110,16 @@ export default function CartPage(props) {
       });
       if (res.status === 204) {
         await getUserCart();
+        await props.checkUser()
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Puschasing complete",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        handleClose();
       }
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Puschasing complete",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      handleClose();
     }
   };
 

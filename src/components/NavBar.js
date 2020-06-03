@@ -18,8 +18,8 @@ export default function NavBar(props) {
         headers: {authorization :`Bearer ${localStorage.getItem("token")}`}
     })
     if(res.status === 204){
-      localStorage.removeItem("token")
       props.setUser(null)
+      localStorage.removeItem("token")
       props.setNumProduct(0)
     } else{
       alert("can not logout")
@@ -41,6 +41,7 @@ export default function NavBar(props) {
               <Link to="/user/profile" className="dropdown-item" >Profile</Link>
               <Link to="/user/create-product" className="dropdown-item" >Add Product</Link>
               <Link to="/user/products-order" className="dropdown-item" >Purchase History</Link>
+              <Link to="/user/products-sold" className="dropdown-item" >Sold History</Link>
             </div>
           </li>
 

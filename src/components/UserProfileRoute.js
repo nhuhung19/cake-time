@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Route } from "react-router-dom";
+// import Auth from "./AuthRouter"
 import NavBar from "./NavBar";
 import BannerProfile from "./BannerProfile";
 import Footer from "./Footer";
@@ -43,13 +44,13 @@ export default function UserProfileRoute({
                     <Link to="/user/create-product">Post Product</Link>
                   </p>
                   <p>
-                    <Link to="/user/products">Products</Link>
+                    <Link to="/user/products">My Products</Link>
                   </p>
                   <p>
-                    <Link to="/user/products-order">Product Order</Link>
+                    <Link to="/user/products-order">Products Order</Link>
                   </p>
                   <p>
-                    <Link to="/user/products-sold">Product Sold</Link>
+                    <Link to="/user/products-sold">Products Sold</Link>
                   </p>
                 </div>
               </div>

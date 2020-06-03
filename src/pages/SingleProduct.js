@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import Review from "../components/Review";
 import WriteReview from "../components/WriteReview";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import CreditCardInput from "react-credit-card-input";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -26,10 +26,7 @@ export default function SingleProduct(props) {
   function openModal() {
     setIsOpen(true);
   }
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = "#f00";
-  }
+  
   function closeModal() {
     setIsOpen(false);
   }
@@ -41,7 +38,7 @@ export default function SingleProduct(props) {
     // console.log(body.data)
   };
 
-  const addToCart = async (e, id, product, price, image) => {
+  const addToCart = async (e, id, productName, price, image) => {
     e.preventDefault();
     if (!props.user) {
       Swal.fire({
@@ -50,7 +47,8 @@ export default function SingleProduct(props) {
         text: "You must login first",
       });
     } else {
-      let productObj = { id, product, price, image, quantity: quantity * 1 };
+      
+      let productObj = { id, product: productName, price, image, quantity: quantity * 1 };
       const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
         method: "POST",
         headers: {
@@ -75,7 +73,7 @@ export default function SingleProduct(props) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: `${body.error}`,
+          text: `${body.error.message}`,
         });
       }
     }

@@ -4,8 +4,16 @@ import Swal from "sweetalert2";
 const moment = require('moment');
 
 export default function UserListOrder(props) {
-  let ListOrders = () => 
-  props.user.listOrder !== 0 ? (
+const history = useHistory()
+
+
+  if(!props.user){
+    alert("you must login first")
+    history.push("/")
+    return <div></div>
+  }
+  const listOrder = () =>
+  props.user.listOrder.length !== 0 ? (
   props.user.listOrder.map((el) => {
     return (
       <div className="row" key={el.id}>
@@ -17,13 +25,12 @@ export default function UserListOrder(props) {
       </div>
     );
   })
-  ): (
-  <div className="text-center">
-    <h2>Purchase hisory is empty</h2>
-    <Link to="/">Go to Shopping now</Link>
+  ):(
+    <div className="text-center mt-3">
+      <h3>Purchase hisory is empty</h3>
+      <Link to="/">Go to Shopping now</Link>
     </div>
     )
-
   const listProducts = (products) => 
     products.map((e) => {
       return (
@@ -35,6 +42,8 @@ export default function UserListOrder(props) {
         </div>
       );
     });
+  
+  
   return (
     <div>
       <div className="container">
@@ -49,7 +58,7 @@ export default function UserListOrder(props) {
         </div>
         <div className="col-lg-4">Day Order</div>
       </div>
-        {ListOrders()}
+        {listOrder()}
       </div>
         <hr/>
     </div>

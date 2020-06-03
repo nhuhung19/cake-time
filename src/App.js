@@ -12,11 +12,10 @@ import UserProfileRoute from "./components/UserProfileRoute";
 import UserProfilePage from "./pages/UserProfilePage";
 import UserProductsPage from "./pages/UserProductsPage";
 import UserListOrder from "./pages/UserListOrder";
-import UserListSold from './pages/UserListSold'
+import UserListSold from "./pages/UserListSold";
 import UserPasswordPage from "./pages/UserPasswordPage";
 import PostProductPage from "./pages/PostProductPage";
 import CartPage from "./pages/CartPage";
-// import AuthRouter from "./components/AuthRouter"
 import NoMoreLogin from "./components/NoMoreLogin";
 import "./css/login.css";
 import "./css/button.css";
@@ -40,6 +39,8 @@ const NavBannerRoute = ({ exact, path, component: Component, ...props }) => (
           numProduct={props.numProduct}
           setNumProduct={props.setNumProduct}
           cartItems={props.cartItems}
+          setUser={props.setUser}
+          user={props.user}
           {...props}
         />
         <Footer />
@@ -61,8 +62,8 @@ const NavRoute = ({ exact, path, component: Component, ...props }) => (
           user={props.user}
         />
         <Component
-          numProduct={props.numProduct}
           checkUser={props.checkUser}
+          numProduct={props.numProduct}
           setNumProduct={props.setNumProduct}
           totalPrice={props.totalPrice}
           setTotalPrice={props.setTotalPrice}
@@ -156,6 +157,7 @@ function App() {
         <NavRoute
           path="/cart"
           setUser={setUser}
+          checkUser={checkUser}
           numProduct={numProduct}
           setNumProduct={setNumProduct}
           user={user}
@@ -167,6 +169,7 @@ function App() {
           setNumProduct={setNumProduct}
           path="/user/profile"
           user={user}
+          setUser={setUser}
           exact
           component={UserProfilePage}
         />
@@ -175,6 +178,7 @@ function App() {
           setNumProduct={setNumProduct}
           path="/user/products"
           user={user}
+          setUser={setUser}
           exact
           component={UserProductsPage}
         />
@@ -183,6 +187,7 @@ function App() {
           setNumProduct={setNumProduct}
           path="/user/password"
           user={user}
+          setUser={setUser}
           exact
           component={UserPasswordPage}
         />
