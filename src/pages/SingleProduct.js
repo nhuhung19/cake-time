@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import Review from "../components/Review";
 import WriteReview from "../components/WriteReview";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import CreditCardInput from "react-credit-card-input";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -35,7 +35,7 @@ export default function SingleProduct(props) {
     const res = await fetch(process.env.REACT_APP_SERVER + `/products/${pId}`);
     const body = await res.json();
     setProduct(body.data);
-    // console.log(body.data)
+    console.log(body.data)
   };
 
   const addToCart = async (e, id, productName, price, image) => {
@@ -163,7 +163,7 @@ export default function SingleProduct(props) {
               <h2>{product.title}</h2>
               <p>{product.description}</p>
               <hr />
-              <p></p>
+              <p>- Category: <Link style={{fontSize: "17px"}} className="font-weight-bold" to={`/category/${product.category && product.category.id}/products`}>{product.category && product.category.category}</Link></p>
               <p>
                 - Price:{" "}
                 <span
@@ -179,6 +179,7 @@ export default function SingleProduct(props) {
                   className="fas fa-birthday-cake"
                 ></i>
               </p>
+              
               <p>
                 - Average Rating: {product.ratingAverage}{" "}
                 <span>

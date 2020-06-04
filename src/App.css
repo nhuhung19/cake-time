@@ -183,7 +183,7 @@ body{
     align-items: center;
 }
 
- .page-item.active .page-link{
+.page-item.active .page-link{
     z-index: 3;
     color: #fff;
     background-color: #B91319 ;
@@ -229,9 +229,34 @@ body{
     transition: all 0.7s;
 }
 
+.products-sold {
+    grid-row: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 75vh;
+}
+
+.products-sold::-webkit-scrollbar{
+    /* background-color: rgb(245, 17, 17); */
+    height: 0.5rem;
+    width: 10px;
+    border-radius: 5px;
+  }
+  /* 
+  .products-sold::-webkit-scrollbar-thumb{
+    background-color: rgb(148, 89, 89);
+    background: transparent;
+    border-radius: 5px;
+  }
+  .products-sold::-webkit-scrollbar-track{
+    background-color: rgb(139, 9, 9);
+    background-color: transparent;
+    width: 5px;
+  } */
+
 @media (min-width: 576px) {
     .img {
-      height: 200px;
+      height: 298px;
     }
   }
 @media (min-width: 800px) {

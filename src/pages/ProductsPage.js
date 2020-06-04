@@ -11,7 +11,7 @@ const override = css`
 `;
 // let productList = [];
 export default function ProductsPage(props) {
-  const { cId } = useParams();
+  let { cId } = useParams();
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(null);
   const [category, setCategory] = useState(null);
@@ -22,7 +22,7 @@ export default function ProductsPage(props) {
   let htmlProducts;
   useEffect(() => {
     getProductByCategory();
-  }, []);
+  }, [cId]);
   // console.log(props.numProduct);
   const getProductByCategory = async () => {
     const res = await fetch(

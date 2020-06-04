@@ -11,6 +11,7 @@ export default function CartPage(props) {
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [show, setShow] = useState(false);
   const [reRender, setReRender] = useState(false);
+  const [itemQuantity, setItemQuantity] = useState([])
   let [cardNumber, setCardNumber] = useState("");
   let [expiry, setExpiry] = useState("");
   let [cvc, setCVC] = useState("");
@@ -65,6 +66,9 @@ export default function CartPage(props) {
       await getUserCart();
     }
   };
+  // const handleQuantity = async (e) => {
+  //   console.log(e.target.value)
+  // }
 
   // const updateQuantity = async (e, id, product, price, image) => {
   //   let productObj = {id, product, price, image, quantity: e.target.value *1}
@@ -150,6 +154,7 @@ export default function CartPage(props) {
                     min="1"
                     value={el.quantity}
                     type="number"
+                    disabled
                   />
                 </form>
               </div>

@@ -27,7 +27,7 @@ const history = useHistory()
   })
   ):(
     <div className="text-center mt-3">
-      <h3>Purchase hisory is empty</h3>
+      <h3>Purchase history is empty</h3>
       <Link to="/">Go to Shopping now</Link>
     </div>
     )
@@ -58,7 +58,9 @@ const history = useHistory()
         </div>
         <div className="col-lg-4">Day Order</div>
       </div>
+      <div className="products-sold">
         {listOrder()}
+      </div>
       </div>
         <hr/>
     </div>

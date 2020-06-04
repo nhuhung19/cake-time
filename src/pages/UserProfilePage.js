@@ -107,7 +107,7 @@ export default function UserProfilePage(props) {
               <input
                 name="phone"
                 value={userProfile.phone}
-                type="text"
+                type="number"
                 class="form-control"
                 id="inputPhone"
                 placeholder="Phone number"

@@ -32,7 +32,7 @@ export default function UserProfileRoute({
                   style={{ border: "1px solid #ddd" }}
                   className="p-3 bg-white rounded-lg"
                 >
-                  <div>DashBoard</div>
+                  <div className="font-weight-bold">DashBoard</div>
                   <hr />
                   <p>
                     <Link to="/user/profile">Profile</Link>
