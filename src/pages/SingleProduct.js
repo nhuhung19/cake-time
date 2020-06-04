@@ -173,7 +173,7 @@ export default function SingleProduct(props) {
                   ${" "}
                 </span>
                 {product.price}
-                <span className="ml-5">- Avaibility: {product.stock}</span>{" "}
+                <span className="ml-5">- Availability: {product.stock}</span>{" "}
                 <i
                   style={{ color: "#B91319" }}
                   className="fas fa-birthday-cake"
