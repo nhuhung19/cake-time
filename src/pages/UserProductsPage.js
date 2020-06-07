@@ -53,7 +53,7 @@ export default function UserProductsPage() {
     const body = await res.json();
     const { title, stock, description, image, price, id } = body.data;
     const {category} = body.data.category
-    console.log(body.data);
+    // console.log(body.data);
     setProduct({ title, stock, description, image, price, id, category });
   };
 

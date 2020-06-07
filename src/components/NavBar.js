@@ -32,7 +32,7 @@ export default function NavBar(props) {
     const res = await fetch(process.env.REACT_APP_SERVER + "/categorys");
     const body = await res.json();
     setCategorys(body.data);
-    console.log(body.data);
+    // console.log(body.data);
   };
   const htmlCategorys = () =>
     categorys.length !== 0

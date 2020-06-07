@@ -32,6 +32,7 @@ export default function ProductsPage(props) {
     // console.log(body)
     setTotalProducts(body.countProducts);
     setProducts(body.data.products);
+    // console.log(body.data.products)
     // productList = body.data.products;
     setCategory(body.data.category);
   };
@@ -98,7 +99,16 @@ export default function ProductsPage(props) {
     setProducts(body.data.products);
   }; // console.log(products);
 
-  const addToCart = async (id, product, price, image) => {
+  const addToCart = async (id, product, price, image, owner) => {
+    // console.log(owner)
+    if((props.user && props.user.id) === owner.id){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You can not buy your product",
+      });
+      return
+    }
     if (!props.user) {
       Swal.fire({
         icon: "error",
@@ -161,7 +171,7 @@ export default function ProductsPage(props) {
               </Link>
               <div className="product-view-cart rounded-bottom w-100 f-center">
                 <span
-                  onClick={() => addToCart(el.id, el.title, el.price, el.image)}
+                  onClick={() => addToCart(el.id, el.title, el.price, el.image, el.owner)}
                   style={{ cursor: "pointer" }}
                   className="font-weight-lighter "
                 >
@@ -206,7 +216,7 @@ export default function ProductsPage(props) {
         );
       })
     );
-
+      console.log(props.user)
   return (
     <div className="container my-5 ">
       <div className="row mt-3">

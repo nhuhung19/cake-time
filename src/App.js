@@ -17,9 +17,16 @@ import UserPasswordPage from "./pages/UserPasswordPage";
 import PostProductPage from "./pages/PostProductPage";
 import CartPage from "./pages/CartPage";
 import NoMoreLogin from "./components/NoMoreLogin";
+import { css } from "@emotion/core";
+import ClipLoader from "react-spinners/ClipLoader";
 import "./css/login.css";
 import "./css/button.css";
 import "./App.css";
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 const NavBannerRoute = ({ exact, path, component: Component, ...props }) => (
   <Route
@@ -119,7 +126,11 @@ function App() {
     }
   }
   if (!runUseEffect) {
-    return <div>...Loading</div>;
+    return (
+    <div className="sweet-loading d-flex justify-content-center w-100">
+      <ClipLoader css={override} size={150} color={"#123abc"} loading={true} />
+    </div>
+    )
   }
 
   // console.log(user);

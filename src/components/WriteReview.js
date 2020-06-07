@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function WriteReview(props) {
   const [review, setReview] = useState({});
@@ -21,7 +22,13 @@ export default function WriteReview(props) {
       }
     );
     if (res.status === 201) {
-      alert("Post successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Post success",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       props.setReRender(!props.reRender)
       props.getProducts()
     } else {

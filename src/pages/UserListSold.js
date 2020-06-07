@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 export default function UserListSold(props) {
   const history = useHistory();
 
   if (!props.user) {
-    alert("you must login first");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "You must login first",
+    });
     history.push("/");
     return <div></div>;
   }

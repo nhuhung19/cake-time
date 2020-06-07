@@ -8,7 +8,11 @@ const history = useHistory()
 
 
   if(!props.user){
-    alert("you must login first")
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "You must login first",
+    });
     history.push("/")
     return <div></div>
   }

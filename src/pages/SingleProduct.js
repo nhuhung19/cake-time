@@ -35,11 +35,19 @@ export default function SingleProduct(props) {
     const res = await fetch(process.env.REACT_APP_SERVER + `/products/${pId}`);
     const body = await res.json();
     setProduct(body.data);
-    console.log(body.data)
+    // console.log(body.data)
   };
 
-  const addToCart = async (e, id, productName, price, image) => {
+  const addToCart = async (e, id, productName, price, image, owner) => {
     e.preventDefault();
+    if((props.user && props.user.id) === owner.id){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You can not buy your product",
+      });
+      return
+    }
     if (!props.user) {
       Swal.fire({
         icon: "error",
@@ -47,7 +55,6 @@ export default function SingleProduct(props) {
         text: "You must login first",
       });
     } else {
-      
       let productObj = { id, product: productName, price, image, quantity: quantity * 1 };
       const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
         method: "POST",
@@ -79,9 +86,17 @@ export default function SingleProduct(props) {
     }
   };
 
-  const onPurchase = async (e, id, product, price, image) => {
+  const onPurchase = async (e, id, product, price, image, owner) => {
     e.preventDefault();
     document.getElementById("purchase-btn").disabled = true;
+    if((props.user && props.user.id) === owner.id){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You can not buy your product",
+      });
+      return
+    }
     if (!props.user) {
       Swal.fire({
         icon: "error",
@@ -197,7 +212,8 @@ export default function SingleProduct(props) {
                     product.id,
                     product.title,
                     product.price,
-                    product.image
+                    product.image,
+                    product.owner
                   )
                 }
               >
@@ -243,7 +259,8 @@ export default function SingleProduct(props) {
                       product.id,
                       product.title,
                       product.price,
-                      product.image
+                      product.image,
+                      product.owner
                     )
                   }
                 >
