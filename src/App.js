@@ -110,7 +110,7 @@ function App() {
       ? window.location.href.split("?token=")[1]
       : null;
     const localToken = localStorage.getItem("token");
-    const token = (urlToken.split("#")[0]) || localToken;
+    const token = (urlToken && urlToken.split("#")[0]) || localToken;
     if (!token) return;
     const res = await fetch(process.env.REACT_APP_SERVER + "/users/profile", {
       headers: { authorization: `Bearer ${token}` },
