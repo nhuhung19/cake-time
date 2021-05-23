@@ -41,7 +41,6 @@ export default function CartPage(props) {
       },
     });
     const body = await res.json();
-    // console.log(body);
     if (body.data && body.data.items) {
       setCartItems(body.data.items);
       props.setNumProduct(body.totalQuantity);
@@ -66,65 +65,51 @@ export default function CartPage(props) {
       await getUserCart();
     }
   };
-  // const handleQuantity = async (e) => {
-  //   console.log(e.target.value)
-  // }
-
-  // const updateQuantity = async (e, id, product, price, image) => {
-  //   let productObj = {id, product, price, image, quantity: e.target.value *1}
-  //   // console.log(productObj)
-  //   const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       authorization: `Bearer ${localStorage.getItem("token")}`,
-  //     },
-  //     body: JSON.stringify(productObj)
-  //   });
-  //   if(res.status === 201){
-  //     getUserCart()
-  //   }
-  // }
   const onPurchase = async (e) => {
-    e.preventDefault();
-    const arrayExpiry = expiry.split(" / ");
-    let cc_exp_month = arrayExpiry[0];
-    let cc_exp_year = arrayExpiry[1];
-    let creditCard = {
-      cc_number: cardNumber,
-      cc_cvc: cvc,
-      cc_exp_month,
-      cc_exp_year,
-    };
-    const res = await fetch(process.env.REACT_APP_SERVER + "/buy", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(creditCard),
-    });
-    if (res.status === 201) {
-      const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
-        method: "DELETE",
+    try{
+      e.preventDefault();
+      const arrayExpiry = expiry.split(" / ");
+      let cc_exp_month = arrayExpiry[0];
+      let cc_exp_year = arrayExpiry[1];
+      let creditCard = {
+        cc_number: cardNumber,
+        cc_cvc: cvc,
+        cc_exp_month,
+        cc_exp_year,
+      };
+      const res = await fetch(process.env.REACT_APP_SERVER + "/buy", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        body: JSON.stringify(creditCard),
       });
-      if (res.status === 204) {
-        await getUserCart();
-        await props.checkUser()
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Puschasing complete",
-          showConfirmButton: false,
-          timer: 1500,
+      if (res.status === 201) {
+        const res = await fetch(process.env.REACT_APP_SERVER + "/cart/user", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
-        handleClose();
+        if (res.status === 204) {
+          await getUserCart();
+          await props.checkUser()
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Puschasing complete",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          handleClose();
+        }
       }
+    }catch(error){
+      console.log(error)
     }
+    
   };
 
   let htmlCartItems =

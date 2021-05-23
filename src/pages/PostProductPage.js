@@ -13,7 +13,6 @@ export default function PostProductPage(props) {
   const getCategory = async () => {
     const res = await fetch(process.env.REACT_APP_SERVER + "/categorys");
     const body = await res.json();
-    // console.log(body);
     setCategory(body.data);
   };
   const checkUser = () => {
@@ -26,63 +25,66 @@ export default function PostProductPage(props) {
       history.push("/")
     }
   };
-  // console.log(categorys[2]? categorys[2].id: "")
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
-  // console.log(product)
   const createProduct = async (e) => {
-    e.preventDefault();
-    document.getElementById('submitButton').disabled = true;
-    const selectedFile = document.getElementById("upload_form").files[0];
-    var formdata = new FormData();
-    formdata.append("image", selectedFile);
-    const res = await fetch("https://api.imgur.com/3/image", {
-      method: "POST",
-      headers: {
-        Authorization: `Client-ID ${process.env.REACT_APP_UPLOAD}`,
-      },
-      body: formdata,
-    });
-    if (res.ok) {
-      const data = await res.json();
-      const dataProduct = { ...product, image: data.data.link };
-      if (data.success) {
-        const res = await fetch(process.env.REACT_APP_SERVER + "/products", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(dataProduct),
-        });
-        const body = await res.json();
-        if (res.status === 201) {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Post product success",
-            showConfirmButton: false,
-            timer: 1500,
+    try{
+      e.preventDefault();
+      document.getElementById('submitButton').disabled = true;
+      const selectedFile = document.getElementById("upload_form").files[0];
+      var formdata = new FormData();
+      formdata.append("image", selectedFile);
+      const res = await fetch("https://api.imgur.com/3/image", {
+        method: "POST",
+        headers: {
+          Authorization: `Client-ID ${process.env.REACT_APP_UPLOAD}`,
+        },
+        body: formdata,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const dataProduct = { ...product, image: data.data.link };
+        if (data.success) {
+          const res = await fetch(process.env.REACT_APP_SERVER + "/products", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify(dataProduct),
           });
-          document.getElementById('submitButton').disabled = false;
+          const body = await res.json();
+          if (res.status === 201) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Post product success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            document.getElementById('submitButton').disabled = false;
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: `${body.error}`,
+            })
+          }
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: `${body.error}`,
-          })
+          console.log("cannot upload because of", data.message);
         }
       } else {
-        console.log("cannot upload because of", data.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong',
+        })
       }
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong',
-      })
+    }catch(error){
+      console.log(error)
     }
+    
   };
   return (
     <div>

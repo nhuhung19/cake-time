@@ -86,7 +86,6 @@ export default function Bread(props) {
         >
           {htmlProducts()}
         </Carousel>
-        ;
       </div>
     </div>
   )

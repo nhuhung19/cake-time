@@ -86,7 +86,7 @@ export default function Pastry(props) {
         >
           {htmlProducts()}
         </Carousel>
-        ;
+        
       </div>
     </div>
   );
